@@ -8,7 +8,7 @@ function MapView(props ) {
     },[])
     function getResolution() {
         alert("Your screen resolution is: " + window.screen.width + "x" + window.screen.height);}
-    getResolution()
+    // getResolution()
     const initmat = []
     for (var i=0;i<props.size;i++){
         initmat.push(0)
