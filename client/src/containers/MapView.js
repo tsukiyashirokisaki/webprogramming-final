@@ -2,46 +2,61 @@ import "../App.css"
 import React, { useEffect, useRef, useState,useCallback } from 'react'
 function MapView(props ) {
     const [name, setname] = useState("")
-    const [cor, setcor] = useState(0)
     useEffect(()=>{
         setname(props.username)
     },[])
-    function getResolution() {
-        alert("Your screen resolution is: " + window.screen.width + "x" + window.screen.height);}
-    // getResolution()
+    const row = Math.trunc(window.screen.width/50)
     const initmat = []
     for (var i=0;i<props.size;i++){
         initmat.push(0)
     }
+    const [cor, setcor] = useState(0)
     initmat[cor] = 1
     const [mat,setmat] = useState(initmat)
+    initmat[cor] = 0
     let grid = Grid(props.size,mat)
-    const escFunction = useCallback((event) => {
-        switch(event.keyCode){
-            case 37: //left
-                if(cor[0]>0){
-                    setcor([cor[0]-1,cor[1]])
-                }
-                break
-            case 38: //up
-                break
-            case 39: //right
-                break
-            case 40: //down
-                break
+    let currmat
+    console.log(mat)            
+    const handleUserKeyPress = useCallback(event => {
+        const { key, keyCode } = event;
+        console.log(cor)
+            
+        if(keyCode === 37 ) //left
+        {
+            setcor(cor => cor-1)
+                        
         }
+        else if(keyCode === 38) //up
+        {setcor(cor => cor-row)}
+        else if(keyCode === 39) //right
+        {
+            setcor(cor => cor+1)
+        }
+        else if(keyCode === 40) //down
+        {setcor(cor => cor+row)}
+        
+        
+        
       }, []);
-    
       useEffect(() => {
-        document.addEventListener("keydown", escFunction, false);
-    
+        window.addEventListener('keydown', handleUserKeyPress);
+       
         return () => {
-          document.removeEventListener("keydown", escFunction, false);
+          window.removeEventListener('keydown', handleUserKeyPress);
         };
-      }, []);
-    console.log(grid)
+      }, [handleUserKeyPress]);
+      useEffect(() => {
+        currmat = initmat
+        currmat[cor] = 1
+        setmat(currmat)
+    }, [cor]);
+    
+
+      
+     
+    // console.log(grid)
     return <div>
-        <h1>{name}' Home</h1>
+        <h1>{name}'s Home</h1>
         {grid}
         </div>
 }
