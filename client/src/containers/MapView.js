@@ -23,15 +23,15 @@ function MapView(props ) {
     },[])
 
     const row = Math.trunc(window.screen.width/50)
-    const initmat = []
+    const initMat = []
     for (var i=0;i<props.size;i++){
-        initmat.push(0)
+        initMat.push(0)
     }
-    const [cor, setcor] = useState(0)
-    initmat[cor] = 1
-    const [mat,setmat] = useState(initmat)
-    initmat[cor] = 0
-    let grid = Grid(props.size,mat)
+    const [coord, setCoord] = useState(0)
+    initMat[coord] = 1
+    const [matrix,setMatrix] = useState(initMat)
+    initMat[coord] = 0
+    let grid = Grid(props.size,matrix)
     let currmat
     const history = useHistory()
     const encounter = useCallback(() => history.push('/attack'), [history])
@@ -41,17 +41,17 @@ function MapView(props ) {
             
         if(keyCode === 37 ) //left
         {
-            setcor(cor => cor-1)
+            setCoord(cor => cor-1)
                         
         }
         else if(keyCode === 38) //up
-        {setcor(cor => cor-row)}
+        {setCoord(cor => cor-row)}
         else if(keyCode === 39) //right
         {
-            setcor(cor => cor+1)
+            setCoord(cor => cor+1)
         }
         else if(keyCode === 40) //down
-        {setcor(cor => cor+row)}
+        {setCoord(cor => cor+row)}
         
       }, []);
 
@@ -64,14 +64,14 @@ function MapView(props ) {
       }, [handleUserKeyPress]);
 
       useEffect(() => {
-        currmat = initmat
-        currmat[cor] = 1
-        setmat(currmat)
-        if (monster[cor]){
+        currmat = initMat
+        currmat[coord] = 1
+        setMatrix(currmat)
+        if (monster[coord]){
             console.log("monster")
             encounter()
         }
-    }, [cor]);
+    }, [coord]);
     
 
       
