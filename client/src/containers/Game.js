@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Route, Link, Redirect } from 'react-router-dom';
 import MapView from './MapView';
 export default function Game() {
-    
+    let mapSize = {row: 15, col: 25};
+    let [coord, setCoord] = useState({row: 0, col: 12});
     return (
         <>
             <Redirect from="/" to="/login" />
@@ -12,7 +13,7 @@ export default function Game() {
             <Route exact path="/map">
                 <div><Link to="/attack">attack</Link></div>
                 <div><Link to="/backpack">backpack</Link></div>
-                <MapView username = "Ric" size = {100} ></MapView>
+                <MapView username = "Ric" mapSize = {mapSize} coord={coord} setCoord={setCoord}></MapView>
                 
             </Route>
             <Route exact path="/attack">

@@ -37,25 +37,10 @@
   }
 }
 
-.butt {
-  background-color: lightBlue;
-  float: left;
-  height:50px;
-  width:50px;
-}
-.checkbutt{
-  background-color: palegreen;
-  float: left;
-  height:50px;
-  width:50px;
-}
-.butt:hover {
-  background-color: blue;
-  color:white;
-}
 br {
   display: block;
   margin: 10px 0;
   line-height: 2px;
   color: lightblue;
 }
+
