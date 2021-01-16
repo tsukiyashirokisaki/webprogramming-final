@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Link, Redirect } from 'react-router-dom';
 import MapView from './MapView';
 export default function Game() {
-    
     return (
         <>
             <Redirect from="/" to="/login" />
@@ -13,7 +12,6 @@ export default function Game() {
                 <div><Link to="/attack">attack</Link></div>
                 <div><Link to="/backpack">backpack</Link></div>
                 <MapView username = "Ric" size = {100} ></MapView>
-                
             </Route>
             <Route exact path="/attack">
                 <div>Attack not implement yet!!</div>
