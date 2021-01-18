@@ -18,23 +18,40 @@ table {
     width: 10% ;
 }
 
-
 .mikata {
     position: absolute;
-    left: 30px;
+    left: 20px;
     bottom: 40px;
     display: inline-block;
     text-align: center;
     width: 480px;
-    
+}
+.mikataattr{
+    border-radius: 10px;
+    position: absolute;
+    left: 350px;
+    bottom: 80px;
+    width: 280px;
+    height: 80px;
+    background-color:rgba(255, 228, 181, 0.623);
 }
 .teki {
     position: absolute;
-    right: 30px;
+    right: 20px;
     top: 40px;
     display: inline-block;
     text-align: center;
     width: 480px;
+}
+.tekiattr{
+    border-radius: 10px;
+    position: absolute;
+    right: 330px;
+    top: 120px;
+    width: 280px;
+    height: 80px;
+    background-color:rgba(255, 228, 181, 0.623);
+    /* background-color: lightskyblue; */
 }
 img {
     width: 256px;
@@ -44,24 +61,8 @@ img {
 .main{
     margin: 20px;
 }
-.tekiattr{
-    border-radius: 10px;
-    position: absolute;
-    right: 350px;
-    top: 120px;
-    width: 300px;
-    height: 80px;
-    background-color:rgba(255, 228, 181, 0.623);
-}
-.mikataattr{
-    border-radius: 10px;
-    position: absolute;
-    left: 350px;
-    bottom: 80px;
-    width: 300px;
-    height: 80px;
-    background-color:rgba(255, 228, 181, 0.623);
-}
+
+
 hr.line {
     border: 10px solid green;
     width: 100px;
@@ -71,3 +72,25 @@ hr.line {
     margin-left: 10px;
     margin-right: 10px;
   }
+div.item{
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 200px;
+    height: 150px;
+}
+.caption {
+    display: block;
+}
+img.sel {
+    height: 150px;
+    width: 150px;
+    
+}
+div.mymonster {
+    margin-top: 10px;
+    margin-left: 10px;
+    height: 600px;
+    width: 600px;
+    
+}
