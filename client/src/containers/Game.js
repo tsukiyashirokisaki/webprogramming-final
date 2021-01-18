@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Link, Redirect } from 'react-router-dom';
 import MapView from './MapView';
+import AttackView from './AttackView'
 export default function Game() {
     
     return (
@@ -16,12 +17,12 @@ export default function Game() {
                 
             </Route>
             <Route exact path="/attack">
-                <div>Attack not implement yet!!</div>
                 <div><Link to="/map">return</Link></div>
+                <AttackView></AttackView>
             </Route>
             <Route exact path="/backpack">
-                <div>Backpack not implement yet!!</div>
                 <div><Link to="/map">return</Link></div>
+                <div>Backpack not implement yet!!</div>
             </Route>
         </>
     );

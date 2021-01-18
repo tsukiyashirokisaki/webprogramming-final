@@ -1,0 +1,73 @@
+table {
+    table-layout: fixed ;
+    width: 100% ;
+  }
+.line50 {
+    width: 50% ;
+}
+.line25 {
+    width: 25% ;
+}
+.line15 {
+    width: 15% ;
+}
+.line20 {
+    width: 20% ;
+}
+.line10 {
+    width: 10% ;
+}
+
+
+.mikata {
+    position: absolute;
+    left: 30px;
+    bottom: 40px;
+    display: inline-block;
+    text-align: center;
+    width: 480px;
+    
+}
+.teki {
+    position: absolute;
+    right: 30px;
+    top: 40px;
+    display: inline-block;
+    text-align: center;
+    width: 480px;
+}
+img {
+    width: 256px;
+    height: 256px;
+}
+
+.main{
+    margin: 20px;
+}
+.tekiattr{
+    border-radius: 10px;
+    position: absolute;
+    right: 350px;
+    top: 120px;
+    width: 300px;
+    height: 80px;
+    background-color:rgba(255, 228, 181, 0.623);
+}
+.mikataattr{
+    border-radius: 10px;
+    position: absolute;
+    left: 350px;
+    bottom: 80px;
+    width: 300px;
+    height: 80px;
+    background-color:rgba(255, 228, 181, 0.623);
+}
+hr.line {
+    border: 10px solid green;
+    width: 100px;
+    display: inline-block;
+    float: right;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
