@@ -2,11 +2,26 @@ import "./AttackView.css"
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { Route, Link, Redirect, useHistory } from 'react-router-dom';
 import cursor from "./images/cursor.png"
-
+import data from "./data/pokemons_data.json"
+import skill from "./data/pokemons_skill.json"
 function AttackView(props) {
     const [sel,setSel] = useState(-1)
-    const pokemon =[{id:0,name:"妙蛙種子",img:require("./images/001.png").default,lv:1,hp:[10,10]},{id:1,name:"妙蛙草",img:require("./images/002.png").default,lv:2,hp:[10,10]},{id:2,name:"妙蛙花",img:require("./images/003.png").default,lv:3,hp:[10,10]},
-    {id:3,name:"小火龍",img:require("./images/004.png").default,lv:4,hp:[10,10]},{id:4,name:"火恐龍",img:require("./images/005.png").default,lv:5,hp:[10,10]},{id:5,name:"噴火龍",img:require("./images/006.png").default,lv:6,hp:[10,10]}]
+    const mypokemon = [{id:20,lv:10,hp:[20,20],exp:300},{id:13,lv:15,hp:[30,30],exp:500},{id:14,lv:30,hp:[300,300],exp:6000}]
+    const pokemon = mypokemon.map(ele => data[ele.id])
+    var idstring
+    useEffect(()=>{
+        for (var i=0;i<mypokemon.length;i++){
+            idstring = mypokemon[i].id+""
+            while (idstring.length<3){
+                idstring = "0"+idstring
+            }
+            pokemon[i].img =  require("./images/"+idstring+".png").default
+            pokemon[i].lv = mypokemon[i].lv
+            pokemon[i].hp = mypokemon[i].hp
+            console.log(pokemon[i].hp)
+            pokemon[i].exp = mypokemon[i].exp
+        }
+    },[])
     const [selmonster,setSelmonster] = useState(0)
     const selmonsterstyle = {
         backgroundColor: "lightskyblue"
@@ -23,8 +38,10 @@ function AttackView(props) {
     const tekipoke =   {name:"火恐龍",img:require("./images/004.png").default,lv:"26",hp:[87,87]}
     const history = useHistory()
     const escape = useCallback(() => history.push('/map'), [history])
+    const [useskill,setUseskill] = useState(0)
     
     const handleUserKeyDown = event => {
+        // console.log(event.key)
         switch (event.key) {
             case "Left":
             case "ArrowLeft":
@@ -69,6 +86,7 @@ function AttackView(props) {
                 else{
                     switch(option){
                         case 0:
+                            setUseskill(1)
                             break;
                         case 1:
                             break;
@@ -82,6 +100,8 @@ function AttackView(props) {
                 }
 
                 break;
+            case "Backspace":
+                setUseskill(0)
         }
     };
     useEffect(() => {
@@ -113,9 +133,9 @@ function AttackView(props) {
                     {tekiview}                           
                     <h1>選擇神奇寶貝</h1>
                     <div class="mymonster">
-                        {pokemon.map(ele =>
+                        {pokemon.map((ele,ind) =>
                         {   
-                        return <div class="item" style={(ele.id===selmonster)?selmonsterstyle:{}} ><img class="sel" src={ele.img} ></img><span class="caption" >{ele.name}</span></div> })}
+                        return <div class="item" style={(ind===selmonster)?selmonsterstyle:{}} ><img class="sel" src={ele.img} ></img><span class="caption" >{ele.name}</span></div> })}
                     </div>
                 </div>
                     }
@@ -142,15 +162,15 @@ function AttackView(props) {
                 <table>
                     <tr>
                         <td class="line15">{option===0?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">攻擊 </td>
+                        <td class="line35">{useskill? pokemon[sel].skill[0]:"攻擊"} </td>
                         <td class="line15">{option===1?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">抓</td>                        
+                        <td class="line35">{useskill? pokemon[sel].skill[1]:"抓"}</td>                        
                     </tr>
                     <tr>
                         <td class="line15">{option===2?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">更換怪獸</td>
+                        <td class="line35">{useskill? pokemon[sel].skill[2]:"更換怪獸"}</td>
                         <td class="line15">{option===3?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">逃跑</td>
+                        <td class="line35">{useskill? pokemon[sel].skill[3]:"逃跑"}</td>
                     </tr>
                 </table>
             </div>
