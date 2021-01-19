@@ -10,7 +10,7 @@ const typeDefs = gql`
         cp: Int!
         type: [String!]!
         skill: [String!]!
-        evolution: [String!]!
+        evolution: [String]!
         maxHp: Int!
         hp: Int!
         attValue: Int!
