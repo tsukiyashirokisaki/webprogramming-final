@@ -10,9 +10,9 @@ function Grid(props) {
         grid.push(<GridRow mapSize={props.mapSize} rowId={i} currCoord={props.coord} edgeLength={props.edgeLength} />)
     }
     return (
-        <table cellSpacing="0" cellPadding="0">
+        <table className="mapgrid"><tbody>
             {grid}
-        </table>
+        </tbody></table>
     )
 }
 
@@ -34,7 +34,7 @@ function GridElement(props) {
     
     return (
         <>
-            <td>
+            <td className="mapgrid-element">
                 <div className={isSameCoord(props.coord, props.currCoord) ? "checkbutt" : "butt"} 
                      style={{width: `${props.edgeLength}px`,
                              height: `${props.edgeLength}px`
