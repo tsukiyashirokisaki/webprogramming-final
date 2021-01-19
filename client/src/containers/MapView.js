@@ -70,7 +70,6 @@ function MapView(props) {
             window.removeEventListener('keydown', handleUserKeyDown);
         };
     }, [handleUserKeyDown]);
-
     
     useEffect(() => {
         for (var monster of monsters) {
