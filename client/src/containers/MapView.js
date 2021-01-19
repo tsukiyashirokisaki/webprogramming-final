@@ -79,8 +79,7 @@ function MapView(props ) {
     // console.log(grid)
     return <div>
         <h1>{name}'s Home</h1>
-        {grid}
-                
+        {grid}      
         </div>
 }
 function GridElement(index,ischeck) {
