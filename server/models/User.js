@@ -3,6 +3,7 @@ const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
     name: { type: String, required: true },
+    password: { type: String, required: true },
     backpack: [{ type: Schema.Types.ObjectId, ref: 'Pokemon' }]
 })
 
