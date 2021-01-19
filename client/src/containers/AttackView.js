@@ -113,7 +113,7 @@ function AttackView(props) {
     const tekiview = <div class="teki">
                         <img src={tekipoke.img}/>
                         <div class="tekiattr">
-                        <table>
+                        <table class="attack-table">
                             <tr>
                                 <td class="line25">{tekipoke.name}</td>
                                 <td class="line50"></td> 

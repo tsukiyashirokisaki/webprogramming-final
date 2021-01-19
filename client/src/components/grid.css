@@ -1,14 +1,23 @@
+.mapgrid {
+    border-spacing: 0px;
+    /* border-padding: 0px; */
+}
+
+.mapgrid-element {
+    padding: 0px
+}
+
 .butt {
     background-color: lightBlue;
     display: grid;
     float: left;
     /* height:50px;
     width:50px; */
-  }
+}
 .checkbutt{
     background-color: palegreen;
-    float: left;
     display: grid;
+    float: left;
     /* height:50px;
     width:50px; */
 }
@@ -16,4 +25,4 @@
 .butt:hover {
     background-color: blue;
     color:white;
-  }
+}
