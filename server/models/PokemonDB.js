@@ -48,12 +48,13 @@ const checkAndAddPokDB = async () => {
         let pok = new PokemonDB({
             pokIndex: pokData[id]['id'],
             name: pokData[id]['name'],
+            type: pokData[id]['type'],
             skills: skills,
             pointATT: pokData[id]['points']['ATT'],
             pointDEF: pokData[id]['points']['DEF'],
             pointSTA: pokData[id]['points']['STA'],
             evolution: pokData[id]['evolution'],
-            maxHp: pokData[id]['maxHP'],
+            maxHp: pokData[id]['maxHP']
         })
 
         await pok.save()

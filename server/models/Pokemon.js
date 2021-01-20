@@ -24,13 +24,13 @@ const PokemonSchema = new Schema({
 })
 
 PokemonSchema.virtual('attValue').get(function () {
-    return this.cp * (this.pointATT + this.ivATT)
+    return this.cp * (this.pointATT + this.ivATT) || 0
 })
 PokemonSchema.virtual('defValue').get(function () {
-    return this.cp * (this.pointDEF + this.ivDEF)
+    return this.cp * (this.pointDEF + this.ivDEF) || 0
 })
 PokemonSchema.virtual('staValue').get(function () {
-    return this.cp * (this.pointSTA + this.ivSTA)
+    return this.cp * (this.pointSTA + this.ivSTA) || 0
 })
 
 const Pokemon = mongoose.model('Pokemon', PokemonSchema)

@@ -2,43 +2,79 @@ import "./AttackView.css"
 import React, { useEffect,  useState, useCallback } from 'react'
 import { Route, Link, Redirect, useHistory } from 'react-router-dom';
 import cursor from "./images/cursor.png"
-import {FindUserByName,UsersQuery} from "../FetchData"
+import {FindUserByName,UsersQuery,RandomPop,AddPokByUser} from "../FetchData"
 import {gql, useQuery, useMutation,useSubscription} from '@apollo/client'
 import {ch2num,typetable} from "./data/type"
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+}
 function AttackView(props) {
+    const history = useHistory()
+    const escape = useCallback(() => history.push('/map'), [history])
+    const [messages,setMessages] = useState("")
     const [sel,setSel] = useState(-1)
-    // const mypokemon = [{id:20,lv:10,hp:[20,20],exp:300},{id:13,lv:15,hp:[30,30],exp:500},{id:14,lv:30,hp:[300,300],exp:6000}]
+    const [tekipoke,setTekipoke] = useState("")
+    const [addPokByUser,{_}] = useMutation(AddPokByUser, {
+        onError(error) {
+            console.log(error)
+    }})
+
+    var { loading, error, data ,refetch} = useQuery(FindUserByName,{variables:{name:props.name}})
+    useEffect(()=>{
+        if (!loading && data!==undefined){
+            props.setBackpack(data.findUserByName.backpack)
+        }
+    },[refetch])
     
     var backpack = []
     var idstring
-    console.log(ch2num)
-    console.log(typetable)
-    for (var i=0;i<props.backpack.length;i++){
+    
+    const [randomPop] = useMutation(RandomPop,  {
+        onCompleted(data) {
+          idstring = data.randomPop.pokIndex+""
+          while (idstring.length<3){
+          idstring = "0"+idstring
+          }
+          setTekipoke({...data.randomPop,img: require("./images/"+idstring+".png").default})
+          
+        }})
+    useEffect(()=>{
+        randomPop()
+    },[])
+
+    const [tekihp, setTekihp] = useState(100)
+    const [teki,setTeki] = useState({
+        width: tekihp+"px",
+    })
+
+    const [mikatahp, setMikatahp] = useState(100)
+    const [mikata,setMikata] = useState({
+        width: mikatahp+"px",
+    })
+
+    for (var i=0;i<Math.min(props.backpack.length,6);i++){
         idstring = props.backpack[i].pokIndex+""
         while (idstring.length<3){
             idstring = "0"+idstring
         }
         backpack.push({...props.backpack[i],img: require("./images/"+idstring+".png").default})
     }
-    const tekipoke = backpack[5]
+    console.log(backpack)
     const [selmonster,setSelmonster] = useState(0)
     const selmonsterstyle = {
         backgroundColor: "lightskyblue"
     }
-    const [tekihp, setTekihp] = useState(100)
-    const [teki,setTeki] = useState({
-        width: tekihp+"px",
-    })
-    const [mikatahp, setMikatahp] = useState(100)
-    const [mikata,setMikata] = useState({
-        width: mikatahp+"px",
-    })
+    
+
+        useEffect(()=>{
+        setTekihp(tekipoke.hp)
+    },[tekipoke])
     useEffect(()=>{
         if (backpack.length>0 && backpack[sel]!==undefined){
             setMikatahp(backpack[sel].hp)
-            setTekihp(tekipoke.hp)
         }    
-    },[])
+    },[sel])
     useEffect(()=>{
     setTeki({
         width:Math.trunc(tekihp/tekipoke.maxHp*100)+"px"   
@@ -51,15 +87,12 @@ function AttackView(props) {
                 
             } )
         }
-        console.log("0")
-        console.log(mikata)
-    
+        
     },[mikatahp])
     
     
     const [option,setOption] = useState(0)
-    // const history = useHistory()
-    // const escape = useCallback(() => history.push('/map'), [history])
+    
     const [useskill,setUseskill] = useState(0)
     var skills =[]
     if ( backpack[sel]!== undefined && backpack.length>0){
@@ -70,7 +103,6 @@ function AttackView(props) {
                 skills[i] = {name:""}
             }
         }
-    console.log(backpack)
     const handleUserKeyDown = event => {
         switch (event.key) {
             case "Left":
@@ -127,12 +159,15 @@ function AttackView(props) {
                             tekihp-1-Math.trunc(
                         skills[option].damage*backpack[sel].attValue/tekipoke.defValue)*(skills[option].type in backpack[sel].type?1.2:1)
                         ))
-                    console.log((skills[option].type in backpack[sel].type)?1.2:1)
-                    console.log(skills[option].type)
-                    console.log(backpack[sel].type)
-                    console.log(String(skills[option].type) in backpack[sel].type)
-                    // setTekihp(tekihp-10)
-
+                    var randomnumber = getRandomInt(tekipoke.skills.length)
+                    setMikatahp(
+                    
+                        Math.max(0,
+                            mikatahp-1-Math.trunc(
+                        tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
+                        ))
+                    setUseskill(0)
+                    setMessages(backpack[sel].name+"使用了"+skills[option].name+" \n"+tekipoke.name+"以"+tekipoke.skills[randomnumber].name+"回擊")
                         
                 }
                 else{
@@ -141,6 +176,18 @@ function AttackView(props) {
                             setUseskill(1)
                             break;
                         case 1:
+                            if (Math.exp(-tekihp/tekipoke.maxHp)>Math.random()){
+                                setMessages("恭喜你抓到了~~~")
+                                addPokByUser({variables:{userName:props.name,pokId:tekipoke._id}})
+                                refetch()
+                                // console.log(props.data)
+                            }
+                            else{
+                                setMessages("可惜，沒抓到@@")
+                    
+                            }
+                            
+                                
                             break;
                         case 2:
                             setSel(-1)
@@ -162,19 +209,20 @@ function AttackView(props) {
             window.removeEventListener('keydown', handleUserKeyDown);
         };
     }, [handleUserKeyDown]);
-    const tekiview = <div class="teki">
+    const tekiview = <div className="teki">
+                        
                         <img src={tekipoke.img}/>
-                        <div class="tekiattr">
-                        <table class="attack-table">
+                        <div className="tekiattr">
+                        <table className="attack-table">
                             <tr>
-                                <td class="line25">{tekipoke.name}</td>
-                                <td class="line50"></td> 
-                                <td class="line25">{"Lv "+Math.trunc(tekipoke.cp)}</td>
+                                <td className="line25">{tekipoke.name}</td>
+                                <td className="line50"></td> 
+                                <td className="line25">{"Lv "+Math.trunc(tekipoke.cp)}</td>
                             </tr>  
                             <tr>
-                                <td class="line25">{"HP"}</td>
-                                <td class="line50" >{tekihp>0?<hr class="line" style={teki}/>:null}</td>
-                                <td class="line25">{tekihp+"/"+tekipoke.maxHp}</td>
+                                <td className="line25">{"HP"}</td>
+                                <td className="line50" >{tekihp>0?<hr className="line" style={teki}/>:null}</td>
+                                <td className="line25">{tekihp+"/"+tekipoke.maxHp}</td>
                             </tr>
                         </table>
                         </div>
@@ -182,54 +230,59 @@ function AttackView(props) {
     
     if (sel === -1){
         return <div>
-                    {tekiview}                           
+        
+                    {tekiview} 
                     <h1>選擇神奇寶貝</h1>
-                    <div class="mymonster">
+                    <div className="mymonster">
                         {backpack.map((ele,ind) =>
                         {   
-                        return <div class="item" style={(ind===selmonster)?selmonsterstyle:{}} ><img class="sel" src={ele.img} ></img><span class="caption" >{ele.name}</span></div> })}
+                        return <div className="item" style={(ind===selmonster)?selmonsterstyle:{}} ><img className="sel" src={ele.img} ></img><span className="caption" >{ele.name}</span></div> })}
                     </div>
+                    <div className="log">{messages}</div>
+        
+                    
                 </div>
                     }
 
-    return <div class="main">
+    return <div className="main">
         {tekiview}     
-        <div class="mikata">
+        <div className="mikata">
             <img src={backpack[sel].img}/>
-            <div class="mikataattr">
+            <div className="mikataattr">
             <table>
                 <tr>
-                    <td class="line25">{backpack[sel].name}</td>
-                    <td class="line50"></td> 
-                    <td class="line25">{"Lv "+Math.trunc(backpack[sel].cp)}</td>
+                    <td className="line25">{backpack[sel].name}</td>
+                    <td className="line50"></td> 
+                    <td className="line25">{"Lv "+Math.trunc(backpack[sel].cp)}</td>
                 </tr>                
                 <tr>
-                    <td class="line25">{"HP"}</td>
-                    <td class="line50" ><hr class="line" style={mikata}/></td>
-                    <td class="line25">{backpack[sel].hp+"/"+backpack[sel].maxHp}</td>                    
+                    <td className="line25">{"HP"}</td>
+                    <td className="line50" >{mikatahp>0?<hr className="line" style={mikata}/>:null}</td>
+                    <td className="line25">{mikatahp+"/"+backpack[sel].maxHp}</td>                    
                 </tr>
             </table>
             </div>
-            <div class="option">
+            <div className="option">
                 <table>
                       
                         
                     <tr>
-                        <td class="line15">{option===0?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">{useskill? skills[0].name:"攻擊"} </td>
-                        <td class="line15">{option===1?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">{useskill? skills[1].name:"抓"}</td>                        
+                        <td className="line15">{option===0?<img className="cursor" src={cursor} ></img>:null}</td>
+                        <td className="line35">{useskill? skills[0].name:"攻擊"} </td>
+                        <td className="line15">{option===1?<img className="cursor" src={cursor} ></img>:null}</td>
+                        <td className="line35">{useskill? skills[1].name:"抓"}</td>                        
                     </tr>
                     <tr>
-                        <td class="line15">{option===2?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">{useskill? skills[2].name:"更換怪獸"}</td>
-                        <td class="line15">{option===3?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">{useskill? skills[3].name:"逃跑"}</td> 
+                        <td className="line15">{option===2?<img className="cursor" src={cursor} ></img>:null}</td>
+                        <td className="line35">{useskill? skills[2].name:"更換怪獸"}</td>
+                        <td className="line15">{option===3?<img className="cursor" src={cursor} ></img>:null}</td>
+                        <td className="line35">{useskill? skills[3].name:"逃跑"}</td> 
                     </tr>
                      
                 </table>
             </div>
         </div>
+        <p className="log">{messages}</p>
     </div>
    
 }

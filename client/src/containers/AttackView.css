@@ -24,7 +24,7 @@
 .mikata {
     position: absolute;
     left: 20px;
-    bottom: 40px;
+    bottom: 100px;
     display: inline-block;
     text-align: center;
     width: 480px;
@@ -49,7 +49,7 @@
 .tekiattr{
     border-radius: 10px;
     position: absolute;
-    right: 330px;   
+    right: 360px;   
     top: 120px;
     width: 280px;
     height: 80px;
@@ -114,4 +114,21 @@ img.cursor {
     
     height: 20px;
     width: 20px;
+}
+.log{
+    position: absolute;
+    /* left: 600px;
+    bottom: 230px; */
+    left: 380px;
+    bottom: 40px;
+    width: 500px;
+    height: 60px;
+    background-color: rgba(128, 128, 128, 0.137);
+    font-size: large;
+    /* text-align: left; */
+    display: inline-block;
+    padding: 10px;
+    border-radius: 5px;
+    line-height: 30px;
+
 }

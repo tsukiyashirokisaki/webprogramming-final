@@ -8,12 +8,11 @@ import {gql, useQuery, useMutation,useSubscription} from '@apollo/client'
 export default function Game(props) {
     let mapSize = {row: 15, col: 25};
     let [coord, setCoord] = useState({row: 0, col: 12});
-    const [name,setName] = useState("Ric")
+    const [name,setName] = useState("1")
     const [backpack,setBackpack] = useState([])
-    var { loading, error, data ,refetch} = useQuery(FindUserByName,{variables:{name:"1"}})
+    var { loading, error, data ,refetch} = useQuery(FindUserByName,{variables:{name:name}})
     useEffect(()=>{
         if (!loading && data!==undefined){
-            setName(data.findUserByName.name)
             setBackpack(data.findUserByName.backpack)
         }
     },[loading])
@@ -31,7 +30,7 @@ export default function Game(props) {
             </Route>
             <Route exact path="/attack">
                 <div><Link to="/map">return</Link></div>
-                <AttackView name={name} backpack={backpack} ></AttackView>
+                <AttackView name={name} backpack={backpack}setBackpack={setBackpack} refetch={refetch} ></AttackView>
             </Route>
             <Route exact path="/backpack">
                 <div><Link to="/map">return</Link></div>
