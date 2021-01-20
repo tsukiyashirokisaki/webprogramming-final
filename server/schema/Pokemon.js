@@ -21,7 +21,7 @@ const typeDefs = gql`
         cp: Float!
         type: [String]!
         skills: [Skill]!
-        evolution: [String]!
+        evolution: [String]
         maxHp: Int!
         hp: Int!
         attValue: Float!
@@ -40,7 +40,7 @@ const typeDefs = gql`
                cp: Int!
                type: [String]!
                skills: [SkillInput]!
-               evolution: [String!]
+               evolution: [String]
                maxHp: Int!
                baseATT: Int!
                baseDEF: Int!
