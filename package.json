@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd server && npm start",
+    "predeploy": "cd client && yarn build",
+    "deploy": "cd client && gh-pages -d build",
     "client": "cd client && npm start",
     "server": "cd server && npm start"
   },
