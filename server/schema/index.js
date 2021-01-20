@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server'
 import * as UserSchema from './User'
 import * as PokemonSchema from './Pokemon'
-import * as PokemonDBSchema from './PokemonDB'
+// import * as PokemonDBSchema from './PokemonDB'
 
 const dTypeDefs = gql`
     type Query {
@@ -22,8 +22,8 @@ const dResolvers = {
     }
 }
 
-const typeDefs = [dTypeDefs, UserSchema.typeDefs, PokemonSchema.typeDefs, PokemonDBSchema.typeDefs]
-const resolvers = [dResolvers, UserSchema.resolvers, PokemonSchema.resolvers, PokemonDBSchema.resolvers]
+const typeDefs = [dTypeDefs, UserSchema.typeDefs, PokemonSchema.typeDefs]
+const resolvers = [dResolvers, UserSchema.resolvers, PokemonSchema.resolvers]
 
 export {
     typeDefs,
