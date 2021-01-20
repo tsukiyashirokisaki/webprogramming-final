@@ -1,7 +1,6 @@
 import { gql } from 'apollo-server'
 import * as UserSchema from './User'
 import * as PokemonSchema from './Pokemon'
-// import * as PokemonDBSchema from './PokemonDB'
 
 const dTypeDefs = gql`
     type Query {
