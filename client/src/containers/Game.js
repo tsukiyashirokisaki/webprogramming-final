@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { Route, Link, Redirect } from 'react-router-dom';
+import LoginView from './loginView'
 import MapView from './MapView';
 import AttackView from './AttackView'
 export default function Game() {
@@ -9,7 +10,7 @@ export default function Game() {
         <>
             <Redirect from="/" to="/login" />
             <Route exact path="/login">
-                <Link to="/map">login</Link>
+                <LoginView></LoginView>
             </Route>
             <Route exact path="/map">
                 <div><Link to="/attack">attack</Link></div>
