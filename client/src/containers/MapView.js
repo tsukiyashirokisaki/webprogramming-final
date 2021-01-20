@@ -32,8 +32,6 @@ function MapView(props) {
 
     }, [])
 
-    // const [coord, setCoord] = useState( props.spawn )
-
     const history = useHistory()
     const encounter = useCallback(() => history.push('/attack'), [history])
 
@@ -76,7 +74,6 @@ function MapView(props) {
             if (isSameCoord(props.coord, monster)) encounter()
         }
     }, [handleUserKeyDown]);
-
 
 
     let edgeLength = Math.trunc((windowSize.width < windowSize.height) ? 

@@ -10,16 +10,16 @@ export default function Game() {
         <>
             <Redirect from="/" to="/login" />
             <Route exact path="/login">
-                <LoginView></LoginView>
+                <LoginView />
             </Route>
             <Route exact path="/map">
                 <div><Link to="/attack">attack</Link></div>
                 <div><Link to="/backpack">backpack</Link></div>
-                <MapView username = "Ric" mapSize = {mapSize} coord={coord} setCoord={setCoord}></MapView>
+                <MapView username = "Ric" mapSize = {mapSize} coord={coord} setCoord={setCoord} />
             </Route>
             <Route exact path="/attack">
                 <div><Link to="/map">return</Link></div>
-                <AttackView></AttackView>
+                <AttackView />
             </Route>
             <Route exact path="/backpack">
                 <div><Link to="/map">return</Link></div>
