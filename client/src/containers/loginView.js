@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
-import { Route, Link, Redirect } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
 import LoginInputBox from '../components/loginInputBox';
 import ConditionalLink from '../components/conditionalLink'
 
-// import bcrypt from 'bcrypt'
+import { gql, useQuery, useMutation, useSubscription } from '@apollo/client'
+import { FindUserByName, LogIn } from "../FetchData"
+import { NoFragmentCyclesRule } from 'graphql';
 
 const saltrounds = 10
 
-
-
-function LoginView() {
+function LoginView(props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [loggingIn, setLoggingIn] = useState(false);
 
+    const history = useHistory()
     const handleUsernameInput = (e) => {
         setUsername(e.target.value)
     }
@@ -22,13 +24,36 @@ function LoginView() {
         setPassword(e.target.value)
     }
 
-    const isLoginValid = () => {
-        console.log(password);
-        console.log('abc123');
-        if (username === "Ric" && password === 'abc123') {
-            return true;
+    //FIX: when the frontend is opened, it will send a query with empty username and password, and causes a error in checkUserExists.
+    // (Error msg in the backend)
+    // The behaviour is seemingly harmless.
+    const { loading, error, data, refetch } = useQuery(LogIn, {
+        variables: {
+            name: username,
+            password: password
         }
-        else return false;
+    })
+
+    useEffect(() => {
+
+        if (loggingIn && username !== "" && password !== "") {
+            refetch()
+
+            if (error) {
+                alert('wrong username or password.')
+                setLoggingIn(false);
+            } else {
+                props.setName(data.login.name);
+                props.setBackpack(data.login.backpack);
+                setUsername("");
+                setPassword("");
+                history.push('/map');
+            }
+        }
+    }, [loggingIn])
+
+    const handleLogin = () => {
+        if (!loading) setLoggingIn(true);
     }
 
     return (
@@ -42,13 +67,18 @@ function LoginView() {
                 left: "50%",
                 textAlign: "center"
             }}>
-                <h1 textAlign>Pokémon</h1>
+                <h1>Pokémon</h1>
+                <h2>Log In</h2>
                 <LoginInputBox name="Username" value={username} onChange={handleUsernameInput} password={false} />
                 <LoginInputBox name="Password" value={password} onChange={handlePasswordInput} password={true} />
-                <ConditionalLink to="/map" condition={isLoginValid()} content={<button>Login / Create user</button>} />
+                <button onClick={handleLogin}>Log In</button>
+                <div><Link to="/signup">Don't have an account? Sign Up</Link></div>
+
             </div>
         </>
     )
 }
+
+
 
 export default LoginView;

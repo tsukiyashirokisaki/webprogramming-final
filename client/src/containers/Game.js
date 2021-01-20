@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Route, Link, Redirect } from 'react-router-dom';
 import LoginView from './loginView'
+import SignupView from './signupView'
 import MapView from './MapView';
 import AttackView from './AttackView'
 import {FindUserByName,UsersQuery} from "../FetchData"
@@ -11,19 +12,16 @@ export default function Game(props) {
     let [coord, setCoord] = useState({row: 0, col: 12});
     const [name,setName] = useState("Ric")
     const [backpack,setBackpack] = useState([])
-    var { loading, error, data ,refetch} = useQuery(FindUserByName,{variables:{name:"1"}})
-    useEffect(()=>{
-        if (!loading && data!==undefined){
-            setName(data.findUserByName.name)
-            setBackpack(data.findUserByName.backpack)
-        }
-    },[loading])
-    console.log(data)
+
     return (
         <>
             <Redirect from="/" to="/login" />
             <Route exact path="/login">
-                <LoginView />
+                <LoginView setName={setName} setBackpack={setBackpack}/>
+                
+            </Route>
+            <Route exact path="/signup">
+                <SignupView setName={setName} setBackpack={setBackpack}/>
             </Route>
             <Route exact path="/map">
                 <div><Link to="/attack">attack</Link></div>
