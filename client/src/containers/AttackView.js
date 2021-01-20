@@ -1,27 +1,30 @@
 import "./AttackView.css"
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect,  useState, useCallback } from 'react'
 import { Route, Link, Redirect, useHistory } from 'react-router-dom';
 import cursor from "./images/cursor.png"
-import data from "./data/pokemons_data.json"
-import skill from "./data/pokemons_skill.json"
+import {FindUserByName,UsersQuery} from "../FetchData"
+import {gql, useQuery, useMutation,useSubscription} from '@apollo/client'
+// import Data from "./data/pokemons_data.json"
+// import skill from "./data/pokemons_skill.json"
+
+
 function AttackView(props) {
     const [sel,setSel] = useState(-1)
-    const mypokemon = [{id:20,lv:10,hp:[20,20],exp:300},{id:13,lv:15,hp:[30,30],exp:500},{id:14,lv:30,hp:[300,300],exp:6000}]
-    const pokemon = mypokemon.map(ele => data[ele.id])
+    // const mypokemon = [{id:20,lv:10,hp:[20,20],exp:300},{id:13,lv:15,hp:[30,30],exp:500},{id:14,lv:30,hp:[300,300],exp:6000}]
+    var backpack = []
     var idstring
-    useEffect(()=>{
-        for (var i=0;i<mypokemon.length;i++){
-            idstring = mypokemon[i].id+""
-            while (idstring.length<3){
-                idstring = "0"+idstring
-            }
-            pokemon[i].img =  require("./images/"+idstring+".png").default
-            pokemon[i].lv = mypokemon[i].lv
-            pokemon[i].hp = mypokemon[i].hp
-            console.log(pokemon[i].hp)
-            pokemon[i].exp = mypokemon[i].exp
+
+    for (var i=0;i<props.backpack.length;i++){
+        idstring = props.backpack[i].pokIndex+""
+        while (idstring.length<3){
+            idstring = "0"+idstring
         }
-    },[])
+        backpack.push({...props.backpack[i],img: require("./images/"+idstring+".png").default})
+    }
+    console.log(backpack)
+    
+
+
     const [selmonster,setSelmonster] = useState(0)
     const selmonsterstyle = {
         backgroundColor: "lightskyblue"
@@ -39,9 +42,18 @@ function AttackView(props) {
     const history = useHistory()
     const escape = useCallback(() => history.push('/map'), [history])
     const [useskill,setUseskill] = useState(0)
-    
+    var skills =[]
+    if ( backpack[sel]!== undefined && backpack.length>0){
+            for(var i=0;i<backpack[sel].skills.length;i++){
+                skills[i] = backpack[sel].skills[i]
+            }
+            for (i;i<4;i++){
+                skills[i] = {name:""}
+            }
+        }
+        console.log(skills)
+   
     const handleUserKeyDown = event => {
-        // console.log(event.key)
         switch (event.key) {
             case "Left":
             case "ArrowLeft":
@@ -63,25 +75,28 @@ function AttackView(props) {
                 break;
             case "Right":
             case "ArrowRight":
-                if (selmonster<pokemon.length-1 && sel === -1){
+                if (selmonster<backpack.length-1 && sel === -1){
                     setSelmonster(selmonster+1)
                 }
-                else if (option < 3 && sel !== -1){
+                else if (option < 3 && sel !== -1 && option+1<props.backpack[sel].skills.length){
                     setOption(option+1)
                 }
                 break;
             case "Down":
             case "ArrowDown":
-                if (selmonster<pokemon.length-3 && sel === -1){
+                if (selmonster<backpack.length-3 && sel === -1 ){
                     setSelmonster(selmonster+3)
                 }
-                else if (option<2 && sel !== -1){
+                else if (option<2 && sel !== -1 && option+2<props.backpack[sel].skills.length){
                     setOption(option+2)
                 }
                 break;
             case "Enter":
                 if (sel === -1){
                     setSel(selmonster)
+                }
+                else if (useskill){
+                    console.log(skills[option])
                 }
                 else{
                     switch(option){
@@ -133,7 +148,7 @@ function AttackView(props) {
                     {tekiview}                           
                     <h1>選擇神奇寶貝</h1>
                     <div class="mymonster">
-                        {pokemon.map((ele,ind) =>
+                        {backpack.map((ele,ind) =>
                         {   
                         return <div class="item" style={(ind===selmonster)?selmonsterstyle:{}} ><img class="sel" src={ele.img} ></img><span class="caption" >{ele.name}</span></div> })}
                     </div>
@@ -143,35 +158,38 @@ function AttackView(props) {
     return <div class="main">
         {tekiview}     
         <div class="mikata">
-            <img src={pokemon[sel].img}/>
+            <img src={backpack[sel].img}/>
             <div class="mikataattr">
             <table>
                 <tr>
-                    <td class="line25">{pokemon[sel].name}</td>
+                    <td class="line25">{backpack[sel].name}</td>
                     <td class="line50"></td> 
-                    <td class="line25">{"Lv "+pokemon[sel].lv}</td>
+                    <td class="line25">{"Lv "+Math.trunc(backpack[sel].cp)}</td>
                 </tr>                
                 <tr>
                     <td class="line25">{"HP"}</td>
                     <td class="line50" ><hr class="line" style={mikata}/></td>
-                    <td class="line25">{pokemon[sel].hp[0]+"/"+pokemon[sel].hp[1]}</td>                    
+                    <td class="line25">{backpack[sel].hp+"/"+backpack[sel].maxHp}</td>                    
                 </tr>
             </table>
             </div>
             <div class="option">
                 <table>
+                      
+                        
                     <tr>
                         <td class="line15">{option===0?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">{useskill? pokemon[sel].skill[0]:"攻擊"} </td>
+                        <td class="line35">{useskill? skills[0].name:"攻擊"} </td>
                         <td class="line15">{option===1?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">{useskill? pokemon[sel].skill[1]:"抓"}</td>                        
+                        <td class="line35">{useskill? skills[1].name:"抓"}</td>                        
                     </tr>
                     <tr>
                         <td class="line15">{option===2?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">{useskill? pokemon[sel].skill[2]:"更換怪獸"}</td>
+                        <td class="line35">{useskill? skills[2].name:"更換怪獸"}</td>
                         <td class="line15">{option===3?<img class="cursor" src={cursor} ></img>:null}</td>
-                        <td class="line35">{useskill? pokemon[sel].skill[3]:"逃跑"}</td>
+                        <td class="line35">{useskill? skills[3].name:"逃跑"}</td> 
                     </tr>
+                     
                 </table>
             </div>
         </div>
