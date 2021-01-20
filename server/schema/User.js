@@ -1,6 +1,5 @@
 import { gql } from 'apollo-server'
 import User from '../models/User'
-import Pokemon from '../models/Pokemon'
 
 const typeDefs = gql`
     type User {
@@ -64,6 +63,10 @@ const resolvers = {
             var user = await checkUserExists(userName)
             user.backpack = user.backpack.filter(item => item != pokId)
             await user.save()
+
+            var delMsg = await Pokemon.deleteOne({ _id: pokId })
+            if(delMsg.deletedCount == 0) throw new Error(`No such Pokemon!! pokId=${pokId}`)
+            
             return true
         }
     }

@@ -118,7 +118,7 @@ const resolvers = {
         },
         updateHp: async (parent, { pokId, hp }, context) => await Pokemon.findByIdAndUpdate({ _id: pokId }, { hp: hp }, { new: true, useFindAndModify: false }),
         updateCp: async (parent, { pokId, cp }, context) => await Pokemon.findByIdAndUpdate({ _id: pokId }, { cp: cp }, { new: true, useFindAndModify: false }),
-        evolution: async (parent, { pokId, cp }, context) => {
+        evolution: async (parent, { pokId }, context) => {
             var pok = await Pokemon.findOne({ _id: pokId })
             if(!pok['evolution']) throw new Error('This Pokemon has no evolutions!!')
             var evolPokDB = await PokemonDB.findOne({ name: randomPickOne(pok['evolution']) })
