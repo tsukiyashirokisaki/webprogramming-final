@@ -1,5 +1,4 @@
 import Grid from "../components/grid"
-
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { Route, Link, Redirect, useHistory } from 'react-router-dom';
 import { isSameCoord } from "../util";
