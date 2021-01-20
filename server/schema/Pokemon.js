@@ -47,7 +47,7 @@ const typeDefs = gql`
                baseSTA: Int!): Pokemon
         randomPop: Pokemon!
         updateHp(pokId:ID!, hp:Int!): Pokemon!
-        updateCp(pokId:ID!, cp:Int!): Pokemon!
+        updateCp(pokId:ID!, cp:Float!): Pokemon!
         evolution(pokId:ID!): Pokemon!
         deletePok(pokId:ID!): Boolean!
         curePok(pokId:ID!): Pokemon!
