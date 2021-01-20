@@ -1,7 +1,9 @@
 {
-  "name": "full_stack_test",
+  "name": "webprogramming-final",
   "version": "1.0.0",
+  "description": "```\r cd client\r npm install --save apollo-boost react-apollo graphql\r ```",
   "main": "index.js",
+<<<<<<< HEAD
   "license": "MIT",
   "scripts": {
     "start": "cd frontend && yarn start",
@@ -11,5 +13,25 @@
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "react-scripts": "^4.0.1"
+=======
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd client && npm start",
+    "server": "cd server && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsukiyashirokisaki/webprogramming-final.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tsukiyashirokisaki/webprogramming-final/issues"
+  },
+  "homepage": "https://github.com/tsukiyashirokisaki/webprogramming-final#readme",
+  "dependencies": {
+    "graphql-yoga": "^1.18.3"
+>>>>>>> ronchen21
   }
 }
