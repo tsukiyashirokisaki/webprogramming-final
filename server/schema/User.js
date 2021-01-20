@@ -52,7 +52,6 @@ const resolvers = {
                 name: name,
                 backpack: [],
                 password: hashed
-                // password: password
             })
 
             var pok = await randomPop()
