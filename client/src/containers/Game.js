@@ -6,6 +6,7 @@ import MapView from './MapView';
 import AttackView from './AttackView'
 import {FindUserByName,UsersQuery} from "../FetchData"
 import {gql, useQuery, useMutation,useSubscription} from '@apollo/client'
+import BackpackView from './backpackView';
 
 export default function Game(props) {
     let mapSize = {row: 15, col: 25};
@@ -34,8 +35,7 @@ export default function Game(props) {
 
             </Route>
             <Route exact path="/backpack">
-                <div><Link to="/map">return</Link></div>
-                <div>Backpack not implement yet!!</div>
+                <BackpackView />
             </Route>
         </>
     );

@@ -2,13 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import LoginInputBox from '../components/loginInputBox';
-import ConditionalLink from '../components/conditionalLink'
 
-import { gql, useQuery, useMutation, useSubscription } from '@apollo/client'
-import { FindUserByName, LogIn } from "../FetchData"
-import { NoFragmentCyclesRule } from 'graphql';
-
-const saltrounds = 10
+import { useQuery } from '@apollo/client'
+import { LogIn } from "../FetchData"
 
 function LoginView(props) {
     const [username, setUsername] = useState("");

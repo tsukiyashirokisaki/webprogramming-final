@@ -6,7 +6,7 @@ import LoginInputBox from '../components/loginInputBox';
 import { useMutation } from '@apollo/client'
 import { SignUp } from "../FetchData"
 
-function LoginView(props) {
+function SignupView(props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [signingUp, setSigningUp] = useState(false);
@@ -26,8 +26,8 @@ function LoginView(props) {
             setSigningUp(false);
         },
         onCompleted: (data) => {
-            props.setName(data.signIn.name);
-            props.setBackpack(data.signIn.backpack);
+            props.setName(data.signUp.name);
+            props.setBackpack(data.signUp.backpack);
             setUsername("");
             setPassword("");
             history.push('/map');
@@ -77,4 +77,4 @@ function LoginView(props) {
 
 
 
-export default LoginView;
+export default SignupView;

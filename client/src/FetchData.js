@@ -36,7 +36,7 @@ const UsersQuery = gql`
 
 const SignUp = gql`
     mutation($name: String!, $password: String!){
-        signIn(name: $name, password: $password) {
+        signUp(name: $name, password: $password) {
             name
             backpack{
             pokIndex
