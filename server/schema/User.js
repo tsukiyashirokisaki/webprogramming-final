@@ -18,7 +18,7 @@ const typeDefs = gql`
     }
 
     extend type Mutation {
-        signIn(name: String!, password: String!): User
+        signUp(name: String!, password: String!): User
         addPokByUser(userName: String!, pokId: ID!): Boolean!
         deletePokByUser(userName: String!, pokId: ID!): Boolean!
     }
@@ -42,7 +42,7 @@ const resolvers = {
         users: async (parent, args, context) => await User.find().populate('backpack')
     },
     Mutation: {
-        signIn: async (parent, { name, password }, context) => {
+        signUp: async (parent, { name, password }, context) => {
             var nameDuplicate = await User.findOne({ name: name })
             if (nameDuplicate) throw new Error('Name already exists!!')
 

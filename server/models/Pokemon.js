@@ -15,19 +15,22 @@ const PokemonSchema = new Schema({
     evolution:  [{ type: String, required: false }], // list of evolution name
     maxHp:      { type: Number, required: true },
     hp:         { type: Number, required: true },
-    baseATT:    { type: Number, required: true },
-    baseDEF:    { type: Number, required: true },
-    baseSTA:    { type: Number, required: true }
+    pointATT:   { type: Number, required: true },
+    pointDEF:   { type: Number, required: true },
+    pointSTA:   { type: Number, required: true },
+    ivATT:      { type: Number, required: true },
+    ivDEF:      { type: Number, required: true },
+    ivSTA:      { type: Number, required: true }
 })
 
 PokemonSchema.virtual('attValue').get(function () {
-    return this.cp * this.baseATT
+    return this.cp * (this.pointATT + this.ivATT)
 })
 PokemonSchema.virtual('defValue').get(function () {
-    return this.cp * this.baseDEF
+    return this.cp * (this.pointDEF + this.ivDEF)
 })
 PokemonSchema.virtual('staValue').get(function () {
-    return this.cp * this.baseSTA
+    return this.cp * (this.pointSTA + this.ivSTA)
 })
 
 const Pokemon = mongoose.model('Pokemon', PokemonSchema)

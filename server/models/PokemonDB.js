@@ -3,20 +3,19 @@ const Schema = mongoose.Schema
 import fs from 'fs'
 
 const PokemonDBSchema = new Schema({
-    pokIndex: { type: Number, required: true },
-    name: { type: String, required: true },
-    type: [{ type: String, required: true }],
-    skills: [{
-        name: { type: String, required: true },
-        type: { type: String, required: true },
-        damage: { type: Number, required: true }
-    }],
-    pointATT: { type: Number, required: true },
-    pointDEF: { type: Number, required: true },
-    pointSTA: { type: Number, required: true },
-    evolution: [{ type: String, required: false }],    // list of evolutions
-    maxHp: { type: Number, required: true },
-    img: { type: String, required: true }        // img file name
+    pokIndex:   { type: Number, required: true },
+    name:       { type: String, required: true },
+    type:       [{ type: String, required: true }],
+    skills:     [{
+                    name: { type: String, required: true },
+                    type: { type: String, required: true },
+                    damage: { type: Number, required: true }
+                }],
+    pointATT:   { type: Number, required: true },
+    pointDEF:   { type: Number, required: true },
+    pointSTA:   { type: Number, required: true },
+    evolution:  [{ type: String, required: false }],    // list of evolutions
+    maxHp:      { type: Number, required: true }
 })
 
 const PokemonDB = mongoose.model('PokemonDB', PokemonDBSchema)
@@ -55,7 +54,6 @@ const checkAndAddPokDB = async () => {
             pointSTA: pokData[id]['points']['STA'],
             evolution: pokData[id]['evolution'],
             maxHp: pokData[id]['maxHP'],
-            img: pokData[id]['img']
         })
 
         await pok.save()
