@@ -6,8 +6,12 @@ const PokemonSchema = new Schema({
     name:       { type: String, required: true },
     nickname:   { type: String, required: true },
     cp:         { type: Number, required: true },
-    type:       [{ type: String, required: true }], // list of type name
-    skill:      [{ type: String, required: true }], // list of skill name
+    type:       [{ type: String, required: true }], // list of skill name
+    skills:     [{
+                    name: { type: String, required: true },
+                    type: { type: String, required: true },
+                    damage: { type: Number, required: true }
+                }], // list of type name
     evolution:  [{ type: String, required: false }], // list of evolution name
     maxHp:      { type: Number, required: true },
     hp:         { type: Number, required: true },

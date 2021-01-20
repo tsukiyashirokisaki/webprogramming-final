@@ -32,6 +32,10 @@ db.once('open', () => {
 
     const PORT = process.env.port || 4000
 
+    // TODO
+    // 1. add password error user
+    // 2. add PokemonDB
+    
     graphQLServer.start(PORT, () => {
         console.log(`Listening on http://localhost:${PORT}`)
     })
