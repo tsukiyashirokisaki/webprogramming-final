@@ -27,7 +27,7 @@ const typeDefs = gql`
 `
 
 const checkUserExists = async (userName) => {
-    var user = await User.findOne({ name: userName })
+    var user = await User.findOne({ name: userName }).populate('backpack')
     if (!user) throw new Error('User does not exist!!')
     return user
 }

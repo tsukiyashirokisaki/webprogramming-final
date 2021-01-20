@@ -7,7 +7,17 @@ import { useQuery } from '@apollo/client'
 import { LogIn } from "../FetchData"
 
 function BackpackView(props) {
+    // var backpack = []
+    // var idstring
 
+    // for (var i=0;i<props.backpack.length;i++){
+    //     idstring = props.backpack[i].pokIndex+""
+    //     while (idstring.length<3){
+    //         idstring = "0"+idstring
+    //     }
+    //     backpack.push({...props.backpack[i],img: require("./images/"+idstring+".png").default})
+    // }
+    // console.log(backpack)
 
     return (
         <>

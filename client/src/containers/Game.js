@@ -35,7 +35,7 @@ export default function Game(props) {
 
             </Route>
             <Route exact path="/backpack">
-                <BackpackView />
+                <BackpackView name={name} backpack={backpack} setBackpack={setBackpack}/>
             </Route>
         </>
     );
