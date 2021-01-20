@@ -21,5 +21,6 @@
   "homepage": "https://github.com/tsukiyashirokisaki/webprogramming-final#readme",
   "dependencies": {
     "graphql-yoga": "^1.18.3"
+
   }
 }
