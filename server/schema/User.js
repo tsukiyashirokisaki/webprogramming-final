@@ -1,6 +1,8 @@
 import { gql } from 'apollo-server'
 import User from '../models/User'
 import { randomPop } from './Pokemon'
+import Pokemon from '../models/Pokemon'
+import bcrypt from 'bcryptjs'
 
 const typeDefs = gql`
     type User {
@@ -33,8 +35,15 @@ const checkUserExists = async (userName) => {
 const resolvers = {
     Query: {
         login: async (parent, { name, password }, context) => {
+            //FIX: when the frontend is opened, it will send a query with empty username and password, and causes a error in checkUserExists.
+            // (Error msg in the backend)
+            // The behaviour is seemingly harmless.
             var user = await checkUserExists(name)
-            if (user.password != password) throw new Error('Password wrong!!')
+
+            if(bcrypt.compareSync(password, user.password) != true) throw new Error('Password wrong!!')
+            // if(password != user.password) throw new Error('Password wrong!!')
+            console.log("auth'ed")
+
             return user
         },
         findUserById: async (parent, { _id }, context) => await User.findOne({ _id: _id }).populate('backpack'),
@@ -45,11 +54,12 @@ const resolvers = {
         signUp: async (parent, { name, password }, context) => {
             var nameDuplicate = await User.findOne({ name: name })
             if (nameDuplicate) throw new Error('Name already exists!!')
-
+            const hashed = bcrypt.hashSync(password)
             var data = new User({
                 name: name,
-                password: password,
-                backpack: []
+                backpack: [],
+                password: hashed
+                // password: password
             })
 
             var pok = await randomPop()
