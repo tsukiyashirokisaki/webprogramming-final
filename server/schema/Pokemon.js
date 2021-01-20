@@ -91,19 +91,19 @@ const resolvers = {
             var pokData = await PokemonDB.findOne().skip(rand)
 
             var data = new Pokemon({
-                pokIndex: pokData['pokIndex'],
-                name: pokData['name'],
-                nickname: pokData['name'],
+                pokIndex: pokData.pokIndex,
+                name: pokData.name,
+                nickname: pokData.name,
                 cp: Math.floor(Math.random() * 300) + 100,
-                type: pokData['type'],
+                type: pokData.type,
                 // TODO
-                skills: pokData['skills'],
-                evolution: pokData['evolution'],
-                maxHp: pokData['maxHp'],
-                hp: pokData['maxHp'],
-                pointATT: pokData['pointATT'],
-                pointDEF: pokData['pointDEF'],
-                pointSTA: pokData['pointSTA'],
+                skills: pokData.skills,
+                evolution: pokData.evolution,
+                maxHp: pokData.maxHp,
+                hp: pokData.maxHp,
+                pointATT: pokData.pointATT,
+                pointDEF: pokData.pointDEF,
+                pointSTA: pokData.pointSTA,
                 ivATT: Math.floor(Math.random() * 15),
                 ivDEF: Math.floor(Math.random() * 15),
                 ivSTA: Math.floor(Math.random() * 15)
