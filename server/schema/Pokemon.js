@@ -145,7 +145,10 @@ const resolvers = {
     }
 }
 
+const randomPop = resolvers.Mutation.randomPop
+
 export {
     typeDefs,
     resolvers
 }
+export { randomPop }

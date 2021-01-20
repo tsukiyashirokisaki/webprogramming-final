@@ -1,5 +1,6 @@
 import { gql } from 'apollo-server'
 import User from '../models/User'
+import { randomPop } from './Pokemon'
 
 const typeDefs = gql`
     type User {
@@ -25,7 +26,7 @@ const typeDefs = gql`
 
 const checkUserExists = async (userName) => {
     var user = await User.findOne({ name: userName })
-    if(!user) throw new Error('User does not exist!!')
+    if (!user) throw new Error('User does not exist!!')
     return user
 }
 
@@ -33,7 +34,7 @@ const resolvers = {
     Query: {
         login: async (parent, { name, password }, context) => {
             var user = await checkUserExists(name)
-            if(user.password != password) throw new Error('Password wrong!!')
+            if (user.password != password) throw new Error('Password wrong!!')
             return user
         },
         findUserById: async (parent, { _id }, context) => await User.findOne({ _id: _id }).populate('backpack'),
@@ -47,14 +48,18 @@ const resolvers = {
 
             var data = new User({
                 name: name,
-                password: password
+                password: password,
+                backpack: []
             })
 
-            return await data.save()
+            var pok = await randomPop()
+            data.backpack.push(pok._id)
+            await data.save()
+            return await User.findOne({ name: name }).populate('backpack')
         },
         addPokByUser: async (parent, { userName, pokId }, context) => {
             var user = await checkUserExists(userName)
-            if(user.backpack.find(bPokId => bPokId == pokId)) throw new Error('Pokemon already in backpack!!')
+            if (user.backpack.find(bPokId => bPokId == pokId)) throw new Error('Pokemon already in backpack!!')
             user.backpack.push(pokId)
             await user.save()
             return true
@@ -65,8 +70,8 @@ const resolvers = {
             await user.save()
 
             var delMsg = await Pokemon.deleteOne({ _id: pokId })
-            if(delMsg.deletedCount == 0) throw new Error(`No such Pokemon!! pokId=${pokId}`)
-            
+            if (delMsg.deletedCount == 0) throw new Error(`No such Pokemon!! pokId=${pokId}`)
+
             return true
         }
     }
