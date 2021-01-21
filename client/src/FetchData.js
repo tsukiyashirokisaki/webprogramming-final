@@ -130,5 +130,6 @@ mutation UpdateHp($pokId: ID!, $hp: Int!){
         hp
     }
 } `
+
 export { FindUserByName, UsersQuery, SignUp, LogIn, RandomPop, AddPokByUser, UpdateCp, UpdateHp }
 
