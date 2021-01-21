@@ -18,7 +18,6 @@ function SumData(arr){
 }
 function AttackView(props) {
     const history = useHistory()
-    
     const [messages,setMessages] = useState("")
     const [sel,setSel] = useState(-1)
     const [tekipoke,setTekipoke] = useState("")
@@ -43,14 +42,8 @@ function AttackView(props) {
             console.log(error)
     }})
     
-    var { loading, error, data ,refetch} = useQuery(FindUserByName,{variables:{name:props.name}})
-    useEffect(()=>{
-        if (!loading && data!==undefined){
-            props.setBackpack(data.findUserByName.backpack)
-        }
-    },[refetch])
     
-    var backpack = []
+    const [backpack,setBackpack] = useState([])
     var idstring
     const [tekihp, setTekihp] = useState(100)
     const [mikatahp, setMikatahp] = useState([])
@@ -67,29 +60,43 @@ function AttackView(props) {
     useEffect(()=>{
         randomPop()
         var emptyarr = []
-        for (var i=0;i<Math.min(props.backpack.length,6);i++){
+        for (var i=0;i<props.backpack.length;i++){
             emptyarr.push(props.backpack[i].hp)
         }
         setMikatahp(emptyarr)
+        var initbackpack = []
+        for (var i=0;i<props.backpack.length;i++){
+            idstring = props.backpack[i].pokIndex+""
+            while (idstring.length<3){
+                idstring = "0"+idstring
+            }
+            initbackpack.push({...props.backpack[i],img: require("./images/"+idstring+".png").default})
+        }
+        setBackpack(initbackpack)
     },[])
 
-
-    for (var i=0;i<Math.min(props.backpack.length,6);i++){
-        idstring = props.backpack[i].pokIndex+""
-        while (idstring.length<3){
-            idstring = "0"+idstring
-        }
-        backpack.push({...props.backpack[i],img: require("./images/"+idstring+".png").default})
-    }
+    
     const escape = useCallback(() => history.push('/map'), [history])
     const jumpout = ()=>{
-        escape();
-        for (var i=0;i<Math.min(6,backpack.length);i++){
-            updateHp({variables:{pokId:backpack[i]._id,hp:mikatahp[i]}})
-            console.log({variables:{pokId:backpack[i]._id,hp:mikatahp[i]}})
-                        
+        let copybackpack = backpack
+        for (var i=0;i<copybackpack.length;i++){
+            updateHp({variables:{pokId:copybackpack[i]._id,hp:mikatahp[i]}})
+            copybackpack[i].hp = mikatahp[i]
+            // copybackpack[i].hp = 100
+            delete copybackpack[i].img
+            console.log({variables:{pokId:copybackpack[i]._id,hp:mikatahp[i]}})                
         }
-        
+        props.setBackpack(copybackpack)
+        setBackpack(copybackpack)
+        escape()  
+    }
+    // console.log(backpack)
+    const catchmonster = ()=>{
+        let copybackpack = backpack
+        copybackpack.push(tekipoke)
+        tekipoke.hp = tekihp
+        setBackpack(copybackpack)
+        console.log(backpack)
     }
 
     const [teki,setTeki] = useState({
@@ -110,11 +117,7 @@ function AttackView(props) {
     useEffect(()=>{
         setTekihp(tekipoke.hp)
     },[tekipoke])
-    // useEffect(()=>{
-    //     if (backpack.length>0 && backpack[sel]!==undefined){
-    //         setMikatahp(backpack[sel].hp)
-    //     }    
-    // },[sel])
+    
     useEffect(()=>{
     setTeki({
         width:Math.trunc(tekihp/tekipoke.maxHp*100)+"px"   
@@ -211,11 +214,8 @@ function AttackView(props) {
                     }
                     if (newtekihp===0){
                         retstr+=" "+tekipoke.name+"失去戰鬥能力"
-                        // updateCp({variables:{pokId: "60088a89022aba36dcffe05b", cp: 302.20267868406205}})
-                        
                         updateCp({variables:{pokId:backpack[sel]._id,cp:backpack[sel].cp+tekipoke.cp/backpack[sel].cp}})
                         console.log({pokId:backpack[sel]._id,cp:backpack[sel].cp+tekipoke.cp/backpack[sel].cp})
-                        // console.log(backpack)
                     }
                     setMessages(retstr)
                     
@@ -229,14 +229,31 @@ function AttackView(props) {
                             
                             break;
                         case 1:
-                            if (mikatahp[sel]>0){
+                            // if (true){
+                            if(mikatahp[sel]>0){
+                                // if (true){
                                 if (Math.exp(-tekihp/tekipoke.maxHp)>Math.random()){
                                     setMessages("恭喜你抓到了~~~")
                                     addPokByUser({variables:{userName:props.name,pokId:tekipoke._id}})
-                                    refetch()
+                                    catchmonster()
+                                    setOption(3)
+                                    // jumpout()
+                                    
                                 }
                                 else{
                                     setMessages("可惜，沒抓到@@")
+                                    var copymikata = mikatahp
+                                    var randomnumber = getRandomInt(tekipoke.skills.length)
+                                    copymikata[sel] = Math.max(0,
+                                    mikatahp[sel]-1-Math.trunc(
+                                    tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
+                                    )
+                                    setMikatahp(copymikata)
+                                    var retstr = tekipoke.name+"使用"+tekipoke.skills[randomnumber].name+"攻擊"
+                                    if(copymikata[sel]===0){
+                                        retstr+=" "+backpack[sel].name+"失去戰鬥能力"
+                                    }
+                                    setMessages(retstr)
                                 }
                             }         
                             break;

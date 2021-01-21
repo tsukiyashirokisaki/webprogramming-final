@@ -120,12 +120,14 @@ const UpdateCp = gql`
 mutation UpdateCp($pokId: ID!, $cp: Float!){
     updateCp(pokId: $pokId, cp: $cp){
         _id
+        cp
     }
 } `
 const UpdateHp = gql`
 mutation UpdateHp($pokId: ID!, $hp: Int!){
     updateHp(pokId: $pokId, hp: $hp){
         _id
+        hp
     }
 } `
 export { FindUserByName, UsersQuery, SignUp, LogIn, RandomPop, AddPokByUser, UpdateCp, UpdateHp }

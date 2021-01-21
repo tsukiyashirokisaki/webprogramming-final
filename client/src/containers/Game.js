@@ -19,8 +19,9 @@ export default function Game(props) {
         if (!loading && data!==undefined){
             setBackpack(data.findUserByName.backpack)
         }
+    // FIX 
+    // [loading, refetch]
     },[])
-    console.log(data)
 
     return (
         <>
