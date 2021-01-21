@@ -60,7 +60,7 @@ function AttackView(props) {
     useEffect(()=>{
         randomPop()
         var emptyarr = []
-        for (var i=0;i<Math.min(props.backpack.length,6);i++){
+        for (var i=0;i<props.backpack.length;i++){
             emptyarr.push(props.backpack[i].hp)
         }
         setMikatahp(emptyarr)
@@ -94,6 +94,7 @@ function AttackView(props) {
     const catchmonster = ()=>{
         let copybackpack = backpack
         copybackpack.push(tekipoke)
+        tekipoke.hp = tekihp
         setBackpack(copybackpack)
         console.log(backpack)
     }
@@ -116,11 +117,7 @@ function AttackView(props) {
     useEffect(()=>{
         setTekihp(tekipoke.hp)
     },[tekipoke])
-    // useEffect(()=>{
-    //     if (backpack.length>0 && backpack[sel]!==undefined){
-    //         setMikatahp(backpack[sel].hp)
-    //     }    
-    // },[sel])
+    
     useEffect(()=>{
     setTeki({
         width:Math.trunc(tekihp/tekipoke.maxHp*100)+"px"   
