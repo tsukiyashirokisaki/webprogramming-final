@@ -11,9 +11,9 @@ query($name: String!){
             cp
             type
             skills{
-              name
-              type
-              damage
+                name
+                type
+                damage
             }
             evolution
             maxHp
@@ -39,22 +39,23 @@ const SignUp = gql`
         signUp(name: $name, password: $password) {
             name
             backpack{
-            pokIndex
-            name
-            nickname
-            cp
-            type
-            skills{
-              name
-              type
-              damage
-            }
-            evolution
-            maxHp
-            hp
-            attValue
-            staValue
-            defValue
+                _id
+                pokIndex
+                name
+                nickname
+                cp
+                type
+                skills{
+                    name
+                    type
+                    damage
+                }
+                evolution
+                maxHp
+                hp
+                attValue
+                staValue
+                defValue
         }
     }
 }
@@ -65,22 +66,23 @@ const LogIn = gql`
         login(name: $name, password: $password) {
             name
             backpack{
-            pokIndex
-            name
-            nickname
-            cp
-            type
-            skills{
-              name
-              type
-              damage
-            }
-            evolution
-            maxHp
-            hp
-            attValue
-            staValue
-            defValue
+                _id
+                pokIndex
+                name
+                nickname
+                cp
+                type
+                skills{
+                    name
+                    type
+                    damage
+                }
+                evolution
+                maxHp
+                hp
+                attValue
+                staValue
+                defValue
         }
     }
 }
@@ -126,5 +128,5 @@ mutation UpdateHp($pokId: ID!, $hp: Int!){
         _id
     }
 } `
-export {FindUserByName, UsersQuery, SignUp, LogIn, RandomPop, AddPokByUser, UpdateCp, UpdateHp}
+export { FindUserByName, UsersQuery, SignUp, LogIn, RandomPop, AddPokByUser, UpdateCp, UpdateHp }
 

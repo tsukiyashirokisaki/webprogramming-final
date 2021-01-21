@@ -38,8 +38,6 @@ const resolvers = {
             var user = await checkUserExists(name)
 
             if(bcrypt.compareSync(password, user.password) != true) throw new Error('Password wrong!!')
-            // if(password != user.password) throw new Error('Password wrong!!')
-            console.log("auth'ed")
 
             return user
         },
@@ -56,7 +54,6 @@ const resolvers = {
                 name: name,
                 backpack: [],
                 password: hashed
-                // password: password
             })
 
             var pok = await randomPop()
