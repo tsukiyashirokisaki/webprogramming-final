@@ -54,7 +54,7 @@ const checkAndAddPokDB = async () => {
             pointDEF: pokData[id]['points']['DEF'],
             pointSTA: pokData[id]['points']['STA'],
             evolution: pokData[id]['evolution'],
-            maxHp: pokData[id]['maxHP']
+            maxHp: pokData[id]['maxHP'] * 5
         })
 
         await pok.save()
