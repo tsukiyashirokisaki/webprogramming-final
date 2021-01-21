@@ -1,5 +1,4 @@
 import Grid from "../components/grid"
-
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { Route, Link, Redirect, useHistory } from 'react-router-dom';
 import { isSameCoord } from "../util";
@@ -31,8 +30,6 @@ function MapView(props) {
         setMonsters(initMonster)
 
     }, [])
-
-    // const [coord, setCoord] = useState( props.spawn )
 
     const history = useHistory()
     const encounter = useCallback(() => history.push('/attack'), [history])
@@ -76,7 +73,6 @@ function MapView(props) {
             if (isSameCoord(props.coord, monster)) encounter()
         }
     }, [handleUserKeyDown]);
-
 
 
     let edgeLength = Math.trunc((windowSize.width < windowSize.height) ? 

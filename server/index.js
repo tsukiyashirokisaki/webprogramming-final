@@ -1,6 +1,7 @@
 import { GraphQLServer, PubSub } from 'graphql-yoga'
 import { typeDefs, resolvers } from './schema'
 import mongoose from 'mongoose'
+import { checkAndAddPokDB } from './models/PokemonDB'
 require('dotenv-defaults').config()
 const pubsub = new PubSub()
 
@@ -27,14 +28,13 @@ const graphQLServer = new GraphQLServer({
 db.on('error', (error) => {
     console.error(error)
 })
-db.once('open', () => {
+db.once('open', async () => {
     console.log('MongoDB connected!')
 
     const PORT = process.env.port || 4000
 
-    // TODO
-    // 1. add password error user
-    // 2. add PokemonDB
+    if(await checkAndAddPokDB())
+        console.log('Great, PokemonDB already exists!!')
     
     graphQLServer.start(PORT, () => {
         console.log(`Listening on http://localhost:${PORT}`)
