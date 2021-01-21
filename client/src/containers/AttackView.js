@@ -262,7 +262,7 @@ function AttackView(props) {
                                     
                                 }
                                 else{
-                                    setMessages("可惜，沒抓到@@")
+                                    
                                     var copymikata = mikatahp
                                     var randomnumber = getRandomInt(tekipoke.skills.length)
                                     copymikata[sel] = Math.max(0,
@@ -270,7 +270,7 @@ function AttackView(props) {
                                     tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
                                     )
                                     setMikatahp(copymikata)
-                                    var retstr = tekipoke.name+"使用"+tekipoke.skills[randomnumber].name+"攻擊"
+                                    var retstr = "可惜，沒抓到 "+tekipoke.name+"使用"+tekipoke.skills[randomnumber].name+"攻擊"
                                     if(copymikata[sel]===0){
                                         retstr+=" "+backpack[sel].name+"失去戰鬥能力"
                                     }
