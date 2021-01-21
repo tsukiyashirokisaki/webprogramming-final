@@ -81,8 +81,8 @@ function AttackView(props) {
         let copybackpack = backpack
         for (var i=0;i<copybackpack.length;i++){
             updateHp({variables:{pokId:copybackpack[i]._id,hp:mikatahp[i]}})
-            copybackpack[i].hp = mikatahp[i]
-            // copybackpack[i].hp = 100
+            // copybackpack[i].hp = mikatahp[i]
+            copybackpack[i].hp = 100
             delete copybackpack[i].img
             console.log({variables:{pokId:copybackpack[i]._id,hp:mikatahp[i]}})                
         }
@@ -90,7 +90,11 @@ function AttackView(props) {
         setBackpack(copybackpack)
         escape()  
     }
-    // console.log(backpack)
+    const clientUpdateCp = (cp_af)=>{
+        let copybackpack = backpack
+        copybackpack[sel].cp = cp_af
+        setBackpack(copybackpack)
+    }
     const catchmonster = ()=>{
         let copybackpack = backpack
         copybackpack.push(tekipoke)
@@ -190,11 +194,11 @@ function AttackView(props) {
                 }
                 break;
             case "Enter":
-                if (tekihp === 0){
-                    jumpout()
-                }
-                else if (sel === -1 ){
+                
+                if (sel === -1 ){
                     setSel(selmonster)
+                    
+                    setMessages("出來吧 "+backpack[selmonster].name)
                 }
                 else if (useskill){
                     var newtekihp = Math.max(0,
@@ -214,9 +218,13 @@ function AttackView(props) {
                         retstr+=" "+backpack[sel].name+"失去戰鬥能力"
                     }
                     if (newtekihp===0){
+                        let cp_af = backpack[sel].cp+tekipoke.cp/backpack[sel].cp
                         retstr+=" "+tekipoke.name+"失去戰鬥能力"
-                        updateCp({variables:{pokId:backpack[sel]._id,cp:backpack[sel].cp+tekipoke.cp/backpack[sel].cp}})
-                        console.log({pokId:backpack[sel]._id,cp:backpack[sel].cp+tekipoke.cp/backpack[sel].cp})
+                        retstr+=backpack[sel].name+"提升了"+Math.floor(tekipoke.cp/backpack[sel].cp*1000)/1000+"等"
+                        updateCp({variables:{pokId:backpack[sel]._id,cp:cp_af}})
+                        clientUpdateCp(cp_af)
+                        console.log(cp_af)
+                        setOption(3)
                     }
                     setMessages(retstr)
                     
