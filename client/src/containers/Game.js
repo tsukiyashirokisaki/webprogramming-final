@@ -14,8 +14,7 @@ export default function Game(props) {
     const [name,setName] = useState("1")
     const [backpack,setBackpack] = useState([])
     const [mikatahp,setMikatahp] = useState([])
-    var { loading, error, data ,refetch} = useQuery(FindUserByName,{variables:{name:name},
-        pollInterval: 500})
+    var { loading, error, data ,refetch} = useQuery(FindUserByName,{variables:{name:name}})
     useEffect(()=>{
         if (!loading && data!==undefined){
             setBackpack(data.findUserByName.backpack)

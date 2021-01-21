@@ -17,6 +17,9 @@ function AttackView(props) {
     const [useskill,setUseskill] = useState(0)
     
     const [addPokByUser] = useMutation(AddPokByUser, {
+        onCompleted(data){
+            console.log(data)
+        },
         onError(error) {
             console.log(error)
     }})
@@ -67,7 +70,7 @@ function AttackView(props) {
     const jumpout = ()=>{
         let copybackpack = backpack
         for (var i=0;i<copybackpack.length;i++){
-            updateHp({variables:{pokId:copybackpack[i]._id,hp:props.mikatahp[i]}})
+            updateHp({variables:{pokId:copybackpack[i]._id,hp:Math.floor(props.mikatahp[i])}})
             copybackpack[i].hp = props.mikatahp[i]
             delete copybackpack[i].img
             console.log({variables:{pokId:copybackpack[i]._id,hp:props.mikatahp[i]}})                
@@ -83,11 +86,16 @@ function AttackView(props) {
     }
     const catchmonster = ()=>{
         let copybackpack = backpack
-        copybackpack.push(tekipoke)
-        tekipoke.hp = tekihp
+        let copytekipoke = tekipoke
+        // copytekipoke.hp = 100
+        copybackpack.push(copytekipoke)
         setBackpack(copybackpack)
-        console.log(backpack)
+        console.log(copytekipoke)
+        props.setMikatahp([...props.mikatahp,tekihp])
+        // console.log("hp")
+        console.log(tekipoke)
     }
+    console.log(backpack)
 
     const [teki,setTeki] = useState({
         width: tekihp+"px",
@@ -203,7 +211,7 @@ function AttackView(props) {
                     }
                     // console.log(typeatk)
                     copymikata[sel] = Math.max(0,
-                        props.mikatahp[sel]-1-Math.trunc(
+                        props.mikatahp[sel]-1-Math.floor(
                     tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*typeatk*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
                     )
                     props.setMikatahp(copymikata)
@@ -249,7 +257,7 @@ function AttackView(props) {
                                     var copymikata = props.mikatahp
                                     var randomnumber = getRandomInt(tekipoke.skills.length)
                                     copymikata[sel] = Math.max(0,
-                                    props.mikatahp[sel]-1-Math.trunc(
+                                    props.mikatahp[sel]-1-Math.floor(
                                     tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
                                     )
                                     props.setMikatahp(copymikata)
