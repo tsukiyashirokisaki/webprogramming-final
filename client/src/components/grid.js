@@ -1,7 +1,8 @@
 import "./grid.css"
 import React from 'react';
-
 import {isSameCoord} from '../util'
+import grassImg from './grass.jpg'
+import playerImg from './player.png'
 
 
 function Grid(props) {
@@ -38,7 +39,13 @@ function GridElement(props) {
                 <div className={isSameCoord(props.coord, props.currCoord) ? "checkbutt" : "butt"} 
                      style={{width: `${props.edgeLength}px`,
                              height: `${props.edgeLength}px`
-                }}/>
+                }}>
+                    <img src={isSameCoord(props.coord, props.currCoord) ? playerImg : grassImg} 
+                         style={{borderStyle: 'solid',
+                                 borderWidth: "0px",
+                                 width: `${props.edgeLength}px`,
+                                 height: `${props.edgeLength}px`}}/>
+                </div>
             </td>
         </>
     )
