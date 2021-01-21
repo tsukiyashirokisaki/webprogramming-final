@@ -15,8 +15,8 @@ export default function Game(props) {
         if (!loading && data!==undefined){
             setBackpack(data.findUserByName.backpack)
         }
-    },[])
-    console.log(data)
+    },[loading,refetch])
+    console.log(backpack)
     return (
         <>
             <Redirect from="/" to="/login" />
