@@ -17,12 +17,14 @@ function AttackView(props) {
     const [useskill,setUseskill] = useState(0)
     
     const [addPokByUser] = useMutation(AddPokByUser, {
-        onCompleted(data){
+    	onCompleted(data){
+    		console.log("add pok")
             console.log(data)
         },
         onError(error) {
             console.log(error)
     }})
+    
     const [updateCp] = useMutation(UpdateCp, {
         onCompleted(data){
             console.log(data)
@@ -247,6 +249,8 @@ function AttackView(props) {
                                 if (Math.exp(-tekihp/tekipoke.maxHp)>Math.random()){
                                     setMessages("恭喜你抓到了~~~")
                                     addPokByUser({variables:{userName:props.name,pokId:tekipoke._id}})
+                                    // addPokByUser({variables:{userName: "1", pokId: "600970fddb8fe12ff86d5ce3"}})
+                                    console.log({userName:props.name,pokId:tekipoke._id})
                                     catchmonster()
                                     setOption(3)
                                     // jumpout()

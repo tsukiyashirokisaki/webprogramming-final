@@ -113,7 +113,9 @@ mutation{
 `
 const AddPokByUser = gql`
 mutation AddPokByUser($userName: String!, $pokId: ID!){
-    addPokByUser(userName: $userName, pokId: $pokId)
+    addPokByUser(userName: $userName, pokId: $pokId){
+        name
+    }
 } `
 
 const UpdateCp = gql`
