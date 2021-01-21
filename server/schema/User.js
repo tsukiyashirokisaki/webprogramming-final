@@ -21,8 +21,8 @@ const typeDefs = gql`
 
     extend type Mutation {
         signUp(name: String!, password: String!): User
-        addPokByUser(userName: String!, pokId: ID!): Boolean!
-        deletePokByUser(userName: String!, pokId: ID!): Boolean!
+        addPokByUser(userName: String!, pokId: ID!): User!
+        deletePokByUser(userName: String!, pokId: ID!): User!
     }
 `
 
@@ -65,7 +65,7 @@ const resolvers = {
             if (data) throw new Error('Pokemon already in backpack!!')
             user.backpack.push(pokId)
             await user.save()
-            return true
+            return await User.findOne({ name: userName }).populate('backpack')
         },
         deletePokByUser: async (parent, { userName, pokId }, context) => {
             var user = await checkUserExists(userName)
@@ -75,7 +75,7 @@ const resolvers = {
             var delMsg = await Pokemon.deleteOne({ _id: pokId })
             if (delMsg.deletedCount == 0) throw new Error(`No such Pokemon!! pokId=${pokId}`)
 
-            return true
+            return await User.findOne({ name: userName }).populate('backpack')
         }
     }
 }

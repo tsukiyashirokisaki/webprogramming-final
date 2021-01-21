@@ -84,7 +84,7 @@ function AttackView(props) {
     const escape = useCallback(() => history.push('/map'), [history])
     const jumpout = ()=>{
         escape();
-        for (var i=0;i<Math.max(6,backpack.length);i++){
+        for (var i=0;i<Math.min(6,backpack.length);i++){
             updateHp({variables:{pokId:backpack[i]._id,hp:mikatahp[i]}})
             console.log({variables:{pokId:backpack[i]._id,hp:mikatahp[i]}})
                         
