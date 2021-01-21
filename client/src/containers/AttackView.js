@@ -16,6 +16,9 @@ function SumData(arr){
     };
     return sum;
 }
+function tekiattack(){
+    
+}
 function AttackView(props) {
     const history = useHistory()
     const [messages,setMessages] = useState("")
@@ -132,12 +135,10 @@ function AttackView(props) {
                 width: Math.trunc(mikatahp[sel]/backpack[sel].maxHp*100)+"px",
             } )
         }
-        
     },[mikatahp[sel]])
     
     
     const [option,setOption] = useState(0)
-    
     var skills =[]
     if ( backpack[sel]!== undefined && backpack.length>0){
             for(var i=0;i<backpack[sel].skills.length;i++){
@@ -200,15 +201,27 @@ function AttackView(props) {
                     setMessages("出來吧 "+backpack[selmonster].name)
                 }
                 else if (useskill){
+                    var typeatk = 0
+                    for (var i=0;i<tekipoke.type.length;i++){
+                            typeatk = Math.max(typetable[ch2num[skills[option].type]][ch2num[tekipoke.type[i]]],typeatk)
+                       
+                    }
+                    // console.log(typeatk)
                     var newtekihp = Math.max(0,
                         tekihp-1-Math.trunc(
-                    skills[option].damage*backpack[sel].attValue/tekipoke.defValue)*(skills[option].type in backpack[sel].type?1.2:1))
+                    skills[option].damage*backpack[sel].attValue/tekipoke.defValue)*typeatk*(skills[option].type in backpack[sel].type?1.2:1))
                     setTekihp(newtekihp )
                     var randomnumber = getRandomInt(tekipoke.skills.length)
                     var copymikata = mikatahp
+                    typeatk = 0
+                    for (var i=0;i<backpack[sel].type.length;i++){
+                            typeatk = Math.max(typetable[ch2num[tekipoke.skills[randomnumber].type]][ch2num[backpack[sel].type[i]]],typeatk)
+                       
+                    }
+                    // console.log(typeatk)
                     copymikata[sel] = Math.max(0,
                         mikatahp[sel]-1-Math.trunc(
-                    tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
+                    tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*typeatk*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
                     )
                     setMikatahp(copymikata)
                     setUseskill(0)
