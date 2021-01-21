@@ -39,6 +39,4 @@ db.once('open', async () => {
     graphQLServer.start(PORT, () => {
         console.log(`Listening on http://localhost:${PORT}`)
     })
-
-    console.log('Please refer to ./server/commandRef.md for a guide on the commands.');
 })
