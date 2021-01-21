@@ -4,6 +4,7 @@ query($name: String!){
     findUserByName(name: $name){
         name
         backpack{
+            _id
             pokIndex
             name
             nickname
@@ -59,4 +60,17 @@ const AddPokByUser = gql`
 mutation AddPokByUser($userName: String!, $pokId: ID!){
   addPokByUser(userName:$userName,pokId:$pokId)
 }`
-export {FindUserByName,UsersQuery,RandomPop,AddPokByUser}
+
+const UpdateCp = gql`
+mutation UpdateCp($pokId:ID!, $cp:Float!){
+    updateCp(pokId:$pokId, cp:$cp){
+        _id
+    }
+}`
+const UpdateHp = gql`
+mutation UpdateHp($pokId:ID!, $hp:Int!){
+    updateHp(pokId:$pokId, hp:$hp){
+        _id
+    }
+}`
+export {FindUserByName,UsersQuery,RandomPop,AddPokByUser,UpdateCp,UpdateHp}
