@@ -61,14 +61,15 @@ const resolvers = {
         },
         addPokByUser: async (parent, { userName, pokId }, context) => {
             var user = await checkUserExists(userName)
-            if (user.backpack.find(bPokId => bPokId == pokId)) throw new Error('Pokemon already in backpack!!')
+            var data = user.backpack.find(pok => pok._id == pokId)
+            if (data) throw new Error('Pokemon already in backpack!!')
             user.backpack.push(pokId)
             await user.save()
             return true
         },
         deletePokByUser: async (parent, { userName, pokId }, context) => {
             var user = await checkUserExists(userName)
-            user.backpack = user.backpack.filter(item => item != pokId)
+            user.backpack = user.backpack.filter(item => item._id != pokId)
             await user.save()
 
             var delMsg = await Pokemon.deleteOne({ _id: pokId })
