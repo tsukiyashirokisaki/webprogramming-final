@@ -21,8 +21,8 @@ const typeDefs = gql`
 
     extend type Mutation {
         signUp(name: String!, password: String!): User
-        addPokByUser(userName: String!, pokId: ID!): Boolean!
-        deletePokByUser(userName: String!, pokId: ID!): Boolean!
+        addPokByUser(userName: String!, pokId: ID!): User!
+        deletePokByUser(userName: String!, pokId: ID!): User!
     }
 `
 
@@ -36,9 +36,7 @@ const resolvers = {
     Query: {
         login: async (parent, { name, password }, context) => {
             var user = await checkUserExists(name)
-
             if(bcrypt.compareSync(password, user.password) != true) throw new Error('Password wrong!!')
-
             return user
         },
         findUserById: async (parent, { _id }, context) => await User.findOne({ _id: _id }).populate('backpack'),
@@ -63,20 +61,21 @@ const resolvers = {
         },
         addPokByUser: async (parent, { userName, pokId }, context) => {
             var user = await checkUserExists(userName)
-            if (user.backpack.find(bPokId => bPokId == pokId)) throw new Error('Pokemon already in backpack!!')
+            var data = user.backpack.find(pok => pok._id == pokId)
+            if (data) throw new Error('Pokemon already in backpack!!')
             user.backpack.push(pokId)
             await user.save()
-            return true
+            return await User.findOne({ name: userName }).populate('backpack')
         },
         deletePokByUser: async (parent, { userName, pokId }, context) => {
             var user = await checkUserExists(userName)
-            user.backpack = user.backpack.filter(item => item != pokId)
+            user.backpack = user.backpack.filter(item => item._id != pokId)
             await user.save()
 
             var delMsg = await Pokemon.deleteOne({ _id: pokId })
             if (delMsg.deletedCount == 0) throw new Error(`No such Pokemon!! pokId=${pokId}`)
 
-            return true
+            return await User.findOne({ name: userName }).populate('backpack')
         }
     }
 }
