@@ -16,6 +16,9 @@ function SumData(arr){
     };
     return sum;
 }
+function tekiattack(){
+    
+}
 function AttackView(props) {
     const history = useHistory()
     const [messages,setMessages] = useState("")
@@ -82,7 +85,6 @@ function AttackView(props) {
         for (var i=0;i<copybackpack.length;i++){
             updateHp({variables:{pokId:copybackpack[i]._id,hp:mikatahp[i]}})
             copybackpack[i].hp = mikatahp[i]
-            // copybackpack[i].hp = 100
             delete copybackpack[i].img
             console.log({variables:{pokId:copybackpack[i]._id,hp:mikatahp[i]}})                
         }
@@ -90,7 +92,11 @@ function AttackView(props) {
         setBackpack(copybackpack)
         escape()  
     }
-    // console.log(backpack)
+    const clientUpdateCp = (cp_af)=>{
+        let copybackpack = backpack
+        copybackpack[sel].cp = cp_af
+        setBackpack(copybackpack)
+    }
     const catchmonster = ()=>{
         let copybackpack = backpack
         copybackpack.push(tekipoke)
@@ -129,11 +135,9 @@ function AttackView(props) {
                 width: Math.trunc(mikatahp[sel]/backpack[sel].maxHp*100)+"px",
             } )
         }
-        
     },[mikatahp[sel]])
     
     const [option,setOption] = useState(0)
-
     var skills =[]
     if ( backpack[sel]!== undefined && backpack.length>0){
             for(var i=0;i<backpack[sel].skills.length;i++){
@@ -189,22 +193,34 @@ function AttackView(props) {
                 }
                 break;
             case "Enter":
-                if (tekihp === 0){
-                    jumpout()
-                }
-                else if (sel === -1 ){
+                
+                if (sel === -1 ){
                     setSel(selmonster)
+                    
+                    setMessages("出來吧 "+backpack[selmonster].name)
                 }
                 else if (useskill){
+                    var typeatk = 0
+                    for (var i=0;i<tekipoke.type.length;i++){
+                            typeatk = Math.max(typetable[ch2num[skills[option].type]][ch2num[tekipoke.type[i]]],typeatk)
+                       
+                    }
+                    // console.log(typeatk)
                     var newtekihp = Math.max(0,
                         tekihp-1-Math.trunc(
-                    skills[option].damage*backpack[sel].attValue/tekipoke.defValue)*(skills[option].type in backpack[sel].type?1.2:1))
+                    skills[option].damage*backpack[sel].attValue/tekipoke.defValue)*typeatk*(skills[option].type in backpack[sel].type?1.2:1))
                     setTekihp(newtekihp )
                     var randomnumber = getRandomInt(tekipoke.skills.length)
                     var copymikata = mikatahp
+                    typeatk = 0
+                    for (var i=0;i<backpack[sel].type.length;i++){
+                            typeatk = Math.max(typetable[ch2num[tekipoke.skills[randomnumber].type]][ch2num[backpack[sel].type[i]]],typeatk)
+                       
+                    }
+                    // console.log(typeatk)
                     copymikata[sel] = Math.max(0,
                         mikatahp[sel]-1-Math.trunc(
-                    tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
+                    tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*typeatk*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
                     )
                     setMikatahp(copymikata)
                     setUseskill(0)
@@ -213,9 +229,13 @@ function AttackView(props) {
                         retstr+=" "+backpack[sel].name+"失去戰鬥能力"
                     }
                     if (newtekihp===0){
+                        let cp_af = backpack[sel].cp+tekipoke.cp/backpack[sel].cp
                         retstr+=" "+tekipoke.name+"失去戰鬥能力"
-                        updateCp({variables:{pokId:backpack[sel]._id,cp:backpack[sel].cp+tekipoke.cp/backpack[sel].cp}})
-                        console.log({pokId:backpack[sel]._id,cp:backpack[sel].cp+tekipoke.cp/backpack[sel].cp})
+                        retstr+=backpack[sel].name+"提升了"+Math.floor(tekipoke.cp/backpack[sel].cp*1000)/1000+"等"
+                        updateCp({variables:{pokId:backpack[sel]._id,cp:cp_af}})
+                        clientUpdateCp(cp_af)
+                        console.log(cp_af)
+                        setOption(3)
                     }
                     setMessages(retstr)
                     
@@ -241,7 +261,7 @@ function AttackView(props) {
                                     
                                 }
                                 else{
-                                    setMessages("可惜，沒抓到@@")
+                                    
                                     var copymikata = mikatahp
                                     var randomnumber = getRandomInt(tekipoke.skills.length)
                                     copymikata[sel] = Math.max(0,
@@ -249,7 +269,7 @@ function AttackView(props) {
                                     tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
                                     )
                                     setMikatahp(copymikata)
-                                    var retstr = tekipoke.name+"使用"+tekipoke.skills[randomnumber].name+"攻擊"
+                                    var retstr = "可惜，沒抓到 "+tekipoke.name+"使用"+tekipoke.skills[randomnumber].name+"攻擊"
                                     if(copymikata[sel]===0){
                                         retstr+=" "+backpack[sel].name+"失去戰鬥能力"
                                     }
