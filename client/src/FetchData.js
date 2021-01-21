@@ -4,6 +4,7 @@ query($name: String!){
     findUserByName(name: $name){
         name
         backpack{
+            _id
             pokIndex
             name
             nickname
@@ -32,7 +33,6 @@ const UsersQuery = gql`
         }
     }
 `
-
 
 const SignUp = gql`
     mutation($name: String!, $password: String!){
@@ -86,4 +86,45 @@ const LogIn = gql`
 }
 `
 
-export { FindUserByName, UsersQuery, SignUp, LogIn }
+const RandomPop = gql`
+mutation{
+    randomPop{
+        _id
+        pokIndex
+        name
+        nickname
+        cp
+        type
+        skills{
+            name
+            type
+            damage
+        }
+        evolution
+        maxHp
+        hp
+        attValue
+        staValue
+        defValue
+    }
+}
+`
+const AddPokByUser = gql`
+mutation AddPokByUser($userName: String!, $pokId: ID!){
+    addPokByUser(userName: $userName, pokId: $pokId)
+} `
+
+const UpdateCp = gql`
+mutation UpdateCp($pokId: ID!, $cp: Float!){
+    updateCp(pokId: $pokId, cp: $cp){
+        _id
+    }
+} `
+const UpdateHp = gql`
+mutation UpdateHp($pokId: ID!, $hp: Int!){
+    updateHp(pokId: $pokId, hp: $hp){
+        _id
+    }
+} `
+export {FindUserByName, UsersQuery, SignUp, LogIn, RandomPop, AddPokByUser, UpdateCp, UpdateHp}
+
