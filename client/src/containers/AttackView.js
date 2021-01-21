@@ -81,8 +81,7 @@ function AttackView(props) {
         let copybackpack = backpack
         for (var i=0;i<copybackpack.length;i++){
             updateHp({variables:{pokId:copybackpack[i]._id,hp:mikatahp[i]}})
-            // copybackpack[i].hp = mikatahp[i]
-            copybackpack[i].hp = 100
+            copybackpack[i].hp = mikatahp[i]
             delete copybackpack[i].img
             console.log({variables:{pokId:copybackpack[i]._id,hp:mikatahp[i]}})                
         }
