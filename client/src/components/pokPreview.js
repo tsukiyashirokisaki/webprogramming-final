@@ -11,7 +11,7 @@ function PokPreview(props) {
         <>
         <li style={{borderStyle: 'solid', borderWidth: '2px', textAlign: 'center'}} onClick={openDetail}>
             <div>#{pokIndex}: {nickname}</div>
-            <img src={img} style={{borderStyle: 'solid', borderWidth: "1px", height: '80%', width: '80%'}}></img>
+            <img src={img} style={{borderStyle: 'solid', borderWidth: "1px", height: '60%', width: '60%'}}></img>
             <div>Type: {type.map((tp=><span><span style={{borderWidth: "1px", borderStyle: 'solid'}}>{tp}</span> </span>))}</div>
             <div>HP: {hp}/{maxHp} CP: {cp}</div>
             <div>ATT: {Math.trunc(attValue/cp)}</div>

@@ -24,7 +24,7 @@ function BackpackView(props) {
     return (
         <>
             <div><Link to="/map">return</Link></div>
-            <div className="pokemon-list" style={{height: '100%', overflow: 'hidden'}}>
+            <div className="pokemon-list" style={{height: '100%', width: '50%', overflow: 'hidden', position: 'fixed'}}>
                 <nav>
                 <ul className="horizontal-list">
                     {backpack.map((pok) => 
@@ -45,6 +45,9 @@ function BackpackView(props) {
                 </ul>
 
                 </nav>
+            </div>
+            <div style={{marginLeft: '50%'}}>
+                Detail
             </div>
         </>
     )
