@@ -27,7 +27,7 @@ const typeDefs = gql`
 `
 
 const checkUserExists = async (userName) => {
-    var user = await User.findOne({ name: userName })
+    var user = await User.findOne({ name: userName }).populate('backpack')
     if (!user) throw new Error('User does not exist!!')
     return user
 }
@@ -35,9 +35,6 @@ const checkUserExists = async (userName) => {
 const resolvers = {
     Query: {
         login: async (parent, { name, password }, context) => {
-            //FIX: when the frontend is opened, it will send a query with empty username and password, and causes a error in checkUserExists.
-            // (Error msg in the backend)
-            // The behaviour is seemingly harmless.
             var user = await checkUserExists(name)
 
             if(bcrypt.compareSync(password, user.password) != true) throw new Error('Password wrong!!')

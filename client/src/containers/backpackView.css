@@ -1,0 +1,29 @@
+.pokemon-list {
+    display: table;
+}
+
+ul.horizontal-list {
+    height: 600px;
+    text-align: center;
+    list-style: none;
+    padding: 6px;
+    display: inline-block;
+    /* display: block; */
+    overflow-y: auto;
+    overflow-x: hidden;
+
+}
+
+ul.horizontal-list>li {
+    display: inline-block;
+    margin: 6px 0 0 6px;
+    padding: 6px 6px 6px 6px;
+
+}
+
+ul.horizontal-list>li:hover {
+    background-color: palegreen;
+}
+
+
+

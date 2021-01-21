@@ -10,6 +10,7 @@ function LoginView(props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loggingIn, setLoggingIn] = useState(false);
+    const [skip, setSkip] = useState(true);
 
     const history = useHistory()
     const handleUsernameInput = (e) => {
@@ -27,17 +28,23 @@ function LoginView(props) {
         variables: {
             name: username,
             password: password
-        }
+        },
+        skip: skip
     })
 
     useEffect(() => {
-
-        if (loggingIn && username !== "" && password !== "") {
+        if (username !== "" && password !== "") {
+            console.log(skip)
             refetch()
+        }
+    }, [skip])
 
+    useEffect(() => {
+        if (data !== undefined) {
+            console.log(data)
             if (error) {
                 alert('wrong username or password.')
-                setLoggingIn(false);
+                // setLoggingIn(false);
             } else {
                 props.setName(data.login.name);
                 props.setBackpack(data.login.backpack);
@@ -45,11 +52,16 @@ function LoginView(props) {
                 setPassword("");
                 history.push('/map');
             }
+            setSkip(true);
         }
-    }, [loggingIn])
+    }, [data])
 
     const handleLogin = () => {
-        if (!loading) setLoggingIn(true);
+        if (!loading) {
+            setSkip(false);
+            // setLoggingIn(true);
+        }
+
     }
 
     return (

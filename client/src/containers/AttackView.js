@@ -38,7 +38,7 @@ function AttackView(props) {
         width: mikatahp+"px"
     }
     const [option,setOption] = useState(0)
-    const tekipoke =   {name:"火恐龍",img:require("./images/004.png").default,lv:"26",hp:[87,87]}
+    const tekipoke = {name:"火恐龍",img:require("./images/004.png").default,lv:"26",hp:[87,87]}
     const history = useHistory()
     const escape = useCallback(() => history.push('/map'), [history])
     const [useskill,setUseskill] = useState(0)
