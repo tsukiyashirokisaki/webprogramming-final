@@ -9,16 +9,6 @@ import {ch2num,typetable} from "./data/type"
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
-function SumData(arr){
-    var sum=0;
-    for (var i = 0; i < arr.length; i++) {
-        sum += arr[i];
-    };
-    return sum;
-}
-function tekiattack(){
-    
-}
 function AttackView(props) {
     const history = useHistory()
     const [messages,setMessages] = useState("")
@@ -49,7 +39,6 @@ function AttackView(props) {
     const [backpack,setBackpack] = useState([])
     var idstring
     const [tekihp, setTekihp] = useState(100)
-    const [mikatahp, setMikatahp] = useState([])
     
     const [randomPop] = useMutation(RandomPop,  {
         onCompleted(data) {
@@ -62,11 +51,6 @@ function AttackView(props) {
         }})
     useEffect(()=>{
         randomPop()
-        var emptyarr = []
-        for (var i=0;i<props.backpack.length;i++){
-            emptyarr.push(props.backpack[i].hp)
-        }
-        setMikatahp(emptyarr)
         var initbackpack = []
         for (var i=0;i<props.backpack.length;i++){
             idstring = props.backpack[i].pokIndex+""
@@ -83,10 +67,10 @@ function AttackView(props) {
     const jumpout = ()=>{
         let copybackpack = backpack
         for (var i=0;i<copybackpack.length;i++){
-            updateHp({variables:{pokId:copybackpack[i]._id,hp:mikatahp[i]}})
-            copybackpack[i].hp = mikatahp[i]
+            updateHp({variables:{pokId:copybackpack[i]._id,hp:props.mikatahp[i]}})
+            copybackpack[i].hp = props.mikatahp[i]
             delete copybackpack[i].img
-            console.log({variables:{pokId:copybackpack[i]._id,hp:mikatahp[i]}})                
+            console.log({variables:{pokId:copybackpack[i]._id,hp:props.mikatahp[i]}})                
         }
         props.setBackpack(copybackpack)
         setBackpack(copybackpack)
@@ -110,7 +94,7 @@ function AttackView(props) {
     })
 
     const [mikata,setMikata] = useState({
-        width: mikatahp[sel]+"px",
+        width: props.mikatahp[sel]+"px",
     })
     
 
@@ -132,10 +116,10 @@ function AttackView(props) {
     useEffect(()=>{
         if (backpack[sel]!==undefined){
             setMikata( {
-                width: Math.trunc(mikatahp[sel]/backpack[sel].maxHp*100)+"px",
+                width: Math.trunc(props.mikatahp[sel]/backpack[sel].maxHp*100)+"px",
             } )
         }
-    },[mikatahp[sel]])
+    },[props.mikatahp[sel]])
     
     const [option,setOption] = useState(0)
     var skills =[]
@@ -211,7 +195,7 @@ function AttackView(props) {
                     skills[option].damage*backpack[sel].attValue/tekipoke.defValue)*typeatk*(skills[option].type in backpack[sel].type?1.2:1))
                     setTekihp(newtekihp )
                     var randomnumber = getRandomInt(tekipoke.skills.length)
-                    var copymikata = mikatahp
+                    var copymikata = props.mikatahp
                     typeatk = 0
                     for (var i=0;i<backpack[sel].type.length;i++){
                             typeatk = Math.max(typetable[ch2num[tekipoke.skills[randomnumber].type]][ch2num[backpack[sel].type[i]]],typeatk)
@@ -219,10 +203,10 @@ function AttackView(props) {
                     }
                     // console.log(typeatk)
                     copymikata[sel] = Math.max(0,
-                        mikatahp[sel]-1-Math.trunc(
+                        props.mikatahp[sel]-1-Math.trunc(
                     tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*typeatk*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
                     )
-                    setMikatahp(copymikata)
+                    props.setMikatahp(copymikata)
                     setUseskill(0)
                     var retstr = backpack[sel].name+"使用了"+skills[option].name+" \n"+tekipoke.name+"以"+tekipoke.skills[randomnumber].name+"回擊"
                     if (copymikata[sel]===0){
@@ -243,14 +227,14 @@ function AttackView(props) {
                 else{
                     switch(option){
                         case 0:
-                            if (mikatahp[sel]>0){
+                            if (props.mikatahp[sel]>0){
                                 setUseskill(1)
                             }
                             
                             break;
                         case 1:
                             // if (true){
-                            if(mikatahp[sel]>0){
+                            if(props.mikatahp[sel]>0){
                                 // if (true){
                                 if (Math.exp(-tekihp/tekipoke.maxHp)>Math.random()){
                                     setMessages("恭喜你抓到了~~~")
@@ -262,13 +246,13 @@ function AttackView(props) {
                                 }
                                 else{
                                     
-                                    var copymikata = mikatahp
+                                    var copymikata = props.mikatahp
                                     var randomnumber = getRandomInt(tekipoke.skills.length)
                                     copymikata[sel] = Math.max(0,
-                                    mikatahp[sel]-1-Math.trunc(
+                                    props.mikatahp[sel]-1-Math.trunc(
                                     tekipoke.skills[randomnumber].damage*tekipoke.attValue/backpack[sel].defValue)*(tekipoke.skills[randomnumber].type in tekipoke.type?1.2:1)
                                     )
-                                    setMikatahp(copymikata)
+                                    props.setMikatahp(copymikata)
                                     var retstr = "可惜，沒抓到 "+tekipoke.name+"使用"+tekipoke.skills[randomnumber].name+"攻擊"
                                     if(copymikata[sel]===0){
                                         retstr+=" "+backpack[sel].name+"失去戰鬥能力"
@@ -342,7 +326,7 @@ function AttackView(props) {
                         {   
                         return <div className="item" style={(ind===selmonster)?selmonsterstyle:{}} ><img className="sel" src={ele.img} ></img><span className="caption" >{ele.name}</span></div> })}
                     </div>
-                    <div className="log">{messages}</div>   
+                   
                 </div>
                     }
 
@@ -359,8 +343,8 @@ function AttackView(props) {
                 </tr>                
                 <tr>
                     <td className="line25">{"HP"}</td>
-                    <td className="line50" >{mikatahp[sel]>0?<hr className="line" style={mikata}/>:null}</td>
-                    <td className="line25">{mikatahp[sel]+"/"+backpack[sel].maxHp}</td>                    
+                    <td className="line50" >{props.mikatahp[sel]>0?<hr className="line" style={mikata}/>:null}</td>
+                    <td className="line25">{props.mikatahp[sel]+"/"+backpack[sel].maxHp}</td>                    
                 </tr>
             </table>
             </div>
